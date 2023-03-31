@@ -1,1 +1,7 @@
 *.egg-info
+*.DS_Store
+*.parquet
+results/OSM/
+results/REFERENCE/
+results/COMPARE/
+*.pyc
