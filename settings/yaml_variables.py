@@ -13,6 +13,8 @@ with open(r"../config.yml") as file:
     area_name = parsed_yaml_file["area_name"]
     study_crs = parsed_yaml_file["study_crs"]
 
+    # Settings for reference data
+    reference_name = parsed_yaml_file["reference_name"]
 #     # Settings for OSM data
 #     bicycle_infrastructure_queries = parsed_yaml_file["bicycle_infrastructure_queries"]
 #     osm_bicycle_infrastructure_type = parsed_yaml_file[
@@ -29,7 +31,7 @@ with open(r"../config.yml") as file:
 #         "ref_bicycle_infrastructure_type"
 #     ]
 #     reference_id_col = parsed_yaml_file["reference_id_col"]
-#     reference_name = parsed_yaml_file["reference_name"]
+      
 
 #     grid_cell_size = parsed_yaml_file["grid_cell_size"]
 
