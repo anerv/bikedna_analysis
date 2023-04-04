@@ -3,7 +3,6 @@ TODO: Is there a correlation between number of errors (over/under) and km of bic
 
 TODO: Analysis of spatial autocorrelation of:
 - over/undershoots
-- potential missing edges/component connections
 
 Always - make plots
 Export results to txt/csv/json
@@ -128,6 +127,7 @@ muni_dang_count = grouped_dangling.size().to_frame('dangling_node_count')
 
 muni_network_counts = pd.merge(pd.merge(muni_infra, muni_node_count,left_index=True, right_index=True),muni_dang_count,left_index=True, right_index=True)
 
+assert len(muni_network_counts) == 98
 muni_network_counts.to_csv("../results/geodk_quality/muni_network_counts.csv", index=True)
 
 #%%
@@ -162,6 +162,7 @@ muni_pop = pd.read_csv("../data/muni_pop.csv",encoding="ISO-8859-1",header=None)
 muni_pop.rename({1:'navn',2:'pop'},inplace=True,axis=1)
 
 muni_network_counts = muni_network_counts.merge(muni_pop[['navn','pop']],left_on='navn', right_on='navn')
+assert len(muni_network_counts) == 98
 
 muni_network_counts['infra_pop'] = muni_network_counts.infra_km / (muni_network_counts['pop'] / 1000)
 
@@ -173,7 +174,7 @@ plt.ylabel('KM/1000 people')
 plt.title('Bicycle Infrastructure Density: Per 1.000 People');
 
 #%%
-# Join over and undershoot to hex grid cells
+# Join over and undershoot to muni
 overshoot_edge_ids = pd.read_csv(ref_results_data_fp+"overshoot_edges_3.csv")
 undershoot_node_ids = pd.read_csv(ref_results_data_fp+"undershoot_nodes_3.csv")
 
@@ -182,7 +183,7 @@ assert len(undershoot_node_ids) == len(undershoots)
 
 overshoots = ref_edges_simplified[ref_edges_simplified.edge_id.isin(overshoot_edge_ids.edge_id)]
 assert len(overshoot_edge_ids) == len(overshoots)
-#
+
 # Join to muni
 over_muni = overshoots[['edge_id','geometry']].sjoin(muni,how='left',predicate='intersects')
 
@@ -195,14 +196,18 @@ assert len(under_muni) == len(undershoots)
 over_df = over_muni.groupby('navn').size().to_frame('overshoots')
 
 under_df = under_muni.groupby('navn').size().to_frame('undershoots')
-
+#%%
 # Combine with muni_network
-muni_network_counts = pd.merge(pd.merge(muni_network_counts, over_df,left_on='navn', right_on='navn'),under_df,left_on='navn', right_on='navn')
-#%%
-muni_network_counts['over_under'] = muni_network_counts.overshoots + muni_network_counts.undershoots
+muni_network_counts = pd.merge(muni_network_counts, over_df,left_on='navn', right_on='navn', how='left')
+assert len(muni_network_counts) == 98
 
+muni_network_counts = pd.merge(muni_network_counts, under_df,left_on='navn', right_on='navn', how='left')
+assert len(muni_network_counts) == 98
+
+muni_network_counts['over_under'] = muni_network_counts.overshoots + muni_network_counts.undershoots
+muni_network_counts['over_under'].fillna(0,inplace=True)
 #%%
-# TODO: Add label for high/low density and add as color
+# TODO: Add label for high/low density and add as color?
 fig = px.scatter(
     muni_network_counts, 
     x='infra_km', 
@@ -214,24 +219,76 @@ fig = px.scatter(
         "over_under": "Over and undershoots",
         "navn": "Municipality"
         })
+
+fig.update_layout(
+    font=dict(
+        size=10,
+        color="RebeccaPurple"
+    )
+)
 fig.show()
 
 #%%
-df = px.data.gapminder().query("continent=='Oceania'")
+# Join over and undershoots to grid ids
+overshoots_grid = overshoots[['edge_id','geometry']].sjoin(int_grid,how='left').drop_duplicates(subset='edge_id',keep="first")[['grid_id']].reset_index(drop=True)
+undershoots_grid = undershoots[['nodeID','geometry']].sjoin(int_grid,how='left').drop_duplicates(subset='nodeID',keep="first")[['grid_id']].reset_index(drop=True)
 
-fig = px.line(df, x="year", y="lifeExp", color="country", title="layout.hovermode='closest' (the default)")
-fig.update_traces(mode="markers+lines")
+over_grid_grouped = overshoots_grid.groupby('grid_id').size().to_frame('overshoots_count')
+under_grid_grouped = undershoots_grid.groupby('grid_id').size().to_frame('undershoots_count')
 
+int_grid_org_len = len(int_grid)
+
+int_grid = int_grid.merge(over_grid_grouped, left_on='grid_id',right_on='grid_id',how='left')
+assert len(int_grid) == int_grid_org_len
+
+int_grid = int_grid.merge(under_grid_grouped, left_on='grid_id',right_on='grid_id',how='left')
+assert len(int_grid) == int_grid_org_len
+
+muni_grid = int_grid.groupby('navn')
+
+muni_components = {}
+
+for name, group in muni_grid:
+    nested_list = group.component_ids_ref.to_list()
+    flat_list = list(set([item for sublist in nested_list for item in sublist]))
+
+    muni_components[name] = len(flat_list)
+
+muni_comp_df = pd.DataFrame.from_dict(muni_components,orient='index',columns=['component_count']).reset_index().rename({'index':'navn'},axis=1)
+assert len(muni_comp_df) == 98
+
+muni_network_counts = muni_network_counts.merge(muni_comp_df, left_on='navn', right_on='navn', how='left')
+assert len(muni_network_counts) == 98
+
+#%%
+fig = px.scatter(
+    muni_network_counts, 
+    x='infra_km', 
+    y='component_count',
+    title='Correlation between infrastructure length and number of components', 
+    hover_data=['navn'],
+    labels={
+        "infra_km": "Length of bicycle infrastructure (KM)",
+        "component_count": "Number of disconnected components",
+        "navn": "Municipality"
+        })
+
+fig.update_layout(
+    font=dict(
+        size=10,
+        color="RebeccaPurple"
+    )
+)
 fig.show()
-#%%
-# TODO: spatially join to hex grid - or use h3 functionality?
-
-
-#%%
-
-# TODO: method for computing number of components in each muni
-# Use 'component_ids_ref'
-# Get a list of all comp ids in each muni (unique)
-
 # %%
-# TODO: correlation between all
+# TODO: correlation between all?
+plot_cols = [
+       'count_ref_simplified_edges', 'count_ref_simplified_nodes',
+       'ref_edge_density', 'ref_node_density', 'ref_dangling_node_density',
+       'count_ref_dangling_nodes', 'ref_dangling_nodes_pct',
+       'component_ids_ref', 'component_count_ref', 'cells_reached_ref',
+       'cells_reached_ref_pct', 'overshoots_count',
+       'undershoots_count']
+
+sns.pairplot(int_grid[plot_cols]);
+# %%
