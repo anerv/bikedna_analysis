@@ -1,6 +1,5 @@
 '''
-TODO: Summary of REFERENCE intrinsic analysis
-- everything in intrinsic summary? - read results, redo tables
+TODO: Is there a correlation between number of errors (over/under) and km of bicycle infra?
 
 TODO: Analysis of spatial autocorrelation of:
 - over/undershoots
@@ -21,6 +20,7 @@ import matplotlib.pyplot as plt
 import pickle
 import json
 import pandas as pd
+import seaborn as sns
 
 %run ../settings/yaml_variables.py
 %run ../settings/df_styler.py
@@ -47,11 +47,12 @@ summarize_results_df = pd.read_csv(f"../results/REFERENCE/{study_area}/data/intr
 summarize_results_df.style.pipe(format_ref_style)
 
 #%%
-# Assign municipal name and id to each hex cell based on centroid overlap
+# Read muni data
 muni = gpd.read_file("../data/municipalities.gpkg")
 muni = muni[['navn','kommunekode','geometry']]
 assert muni.crs == study_crs
 #%%
+# Assign municipal name and id to each hex cell based on centroid overlap
 ref_intrinsic_grid.dropna(subset='count_ref_edges',inplace=True)
 
 grid_centroids = ref_intrinsic_grid[['geometry','grid_id','count_ref_edges']].copy()
@@ -83,38 +84,104 @@ nodes_joined.drop('index_left',axis=1,inplace=True)
 
 nodes_joined_2 = gpd.sjoin_nearest(muni, nodes_joined[nodes_joined.navn.isna()][['nodeID','x','y','geometry']], how='right', distance_col="dist")
 nodes_joined_2.drop('index_left',axis=1,inplace=True)
-nodes_joined_2 = nodes_joined_2.drop_duplicates(subset='nodeID', keep="first")
+nodes_joined_2.drop_duplicates(subset='nodeID', keep="first",inplace=True)
 
 nodes_joined.dropna(subset='navn',inplace=True)
 
 muni_nodes = pd.concat([nodes_joined,nodes_joined_2])
 
+assert len(muni_nodes) == len(ref_nodes_simplified)
 assert len(muni_nodes) == len(muni_nodes.nodeID.unique())
 assert len(muni_nodes[muni_nodes.navn.isna()]) == 0
 assert len(muni_edges[muni_edges.navn.isna()]) == 0
 #%%
+# Index dangling nodes by muni
+dang_joined = gpd.sjoin(muni, ref_dangling, how="right",predicate="contains")
+dang_joined.drop('index_left',axis=1,inplace=True)
+
+dang_joined_2 = gpd.sjoin_nearest(muni, dang_joined[dang_joined.navn.isna()][['nodeID','x','y','geometry']], how='right', distance_col="dist")
+dang_joined_2.drop('index_left',axis=1,inplace=True)
+
+dang_joined_2.drop_duplicates(subset='nodeID', keep="first",inplace=True)
+
+dang_joined.dropna(subset='navn',inplace=True)
+
+muni_dang = pd.concat([dang_joined,dang_joined_2])
+
+assert len(muni_dang) == len(ref_dangling)
+assert len(muni_dang) == len(muni_dang.nodeID.unique())
+assert len(muni_dang[muni_dang.navn.isna()]) == 0
+assert len(muni_dang[muni_dang.navn.isna()]) == 0
+#%%
 # Group by muni
-grouped_edges = muni_edges.groupby('navn') 
+grouped_edges = muni_edges.groupby("navn") 
 grouped_nodes = muni_nodes.groupby("navn")
+grouped_dangling = muni_dang.groupby("navn")
+#%%
+# Turn into dataframe
+muni_infra = grouped_edges['infrastructure_length'].sum().to_frame()
+
+muni_node_count = grouped_nodes.size().to_frame('node_count') 
+
+muni_dang_count = grouped_dangling.size().to_frame('dangling_node_count') 
+
+muni_network_counts = pd.merge(pd.merge(muni_infra, muni_node_count,left_index=True, right_index=True),muni_dang_count,left_index=True, right_index=True)
+
+muni_network_counts.to_csv("../results/geodk_quality/muni_network_counts.csv", index=True)
 
 #%%
-muni_infra = grouped_edges['infrastructure_length'].sum()
-muni_infra.sort_values()
-#%%
-muni_node_count = grouped_nodes.size()
-muni_node_count.sort_values()
-#%%
-# TODO: Aggregate dangling nodes PER MUNI
+# Plot km of bicycle infra per muni
+muni_network_counts['infra_km'] = muni_network_counts.infrastructure_length / 1000
 
-# TODO: PLOT with seaborn
+fig, ax = plt.subplots(figsize=(20,20))
+sns.barplot(muni_network_counts.reset_index().sort_values('infra_km'), x="navn",y='infra_km',ax=ax, color='red')
+plt.xticks(rotation = 45, ha = 'right')
+plt.xlabel('')
+plt.ylabel('KM')
+plt.title('Bicycle Infrastructure');
+
+# Plot infra density per muni
+muni['area_sqkm'] = muni.area / 1000000
+
+muni_network_counts = muni_network_counts.merge(
+    muni[['navn','area_sqkm']],left_index=True,right_on='navn'
+)
+
+muni_network_counts['infra_dens'] = muni_network_counts.infra_km / muni_network_counts.area_sqkm
+
+fig, ax = plt.subplots(figsize=(20,20))
+sns.barplot(muni_network_counts.reset_index().sort_values('infra_dens'), x="navn",y='infra_dens',ax=ax, color='red')
+plt.xticks(rotation = 45, ha = 'right')
+plt.xlabel('')
+plt.ylabel('KM/SQKM')
+plt.title('Bicycle Infrastructure Density');
+
+# Plot infra per pop
+muni_pop = pd.read_csv("../data/muni_pop.csv",encoding="ISO-8859-1",header=None)
+muni_pop.rename({1:'navn',2:'pop'},inplace=True,axis=1)
+
+muni_network_counts = muni_network_counts.merge(muni_pop[['navn','pop']],left_on='navn', right_on='navn')
+
+muni_network_counts['infra_pop'] = muni_network_counts.infra_km / (muni_network_counts['pop'] / 1000)
+
+fig, ax = plt.subplots(figsize=(20,20))
+sns.barplot(muni_network_counts.reset_index().sort_values('infra_pop'), x="navn",y='infra_pop',ax=ax, color='red')
+plt.xticks(rotation = 45, ha = 'right')
+plt.xlabel('')
+plt.ylabel('KM/1000 people')
+plt.title('Bicycle Infrastructure Density: Per 1.000 People');
 
 #%%
+
+
 
 # TODO: Read in node ids of under/overshoots
-# TODO: read nodes
+
 # TODO: assign under/over to grid cells
 
-# TODO: Same for missing edge comp
+# TODO: Same for missing edge comp?
+
+# TODO: method for computing number of components in each muni
 
 # TODO: Count number of over/under and potential missing edge/comp connc. per muni
 
