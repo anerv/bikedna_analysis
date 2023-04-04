@@ -6,3 +6,4 @@ results/REFERENCE/
 results/COMPARE/
 *.pyc
 data/*
+results/geodk_quality/*
