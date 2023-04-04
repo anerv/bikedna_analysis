@@ -21,6 +21,7 @@ import pickle
 import json
 import pandas as pd
 import seaborn as sns
+import plotly.express as px
 
 %run ../settings/yaml_variables.py
 %run ../settings/df_styler.py
@@ -172,17 +173,65 @@ plt.ylabel('KM/1000 people')
 plt.title('Bicycle Infrastructure Density: Per 1.000 People');
 
 #%%
+# Join over and undershoot to hex grid cells
+overshoot_edge_ids = pd.read_csv(ref_results_data_fp+"overshoot_edges_3.csv")
+undershoot_node_ids = pd.read_csv(ref_results_data_fp+"undershoot_nodes_3.csv")
+
+undershoots = ref_nodes_simplified[ref_nodes_simplified.nodeID.isin(undershoot_node_ids.node_id)]
+assert len(undershoot_node_ids) == len(undershoots)
+
+overshoots = ref_edges_simplified[ref_edges_simplified.edge_id.isin(overshoot_edge_ids.edge_id)]
+assert len(overshoot_edge_ids) == len(overshoots)
+#
+# Join to muni
+over_muni = overshoots[['edge_id','geometry']].sjoin(muni,how='left',predicate='intersects')
+
+under_muni = undershoots[['nodeID','geometry']].sjoin(muni,how='left', predicate='intersects')
+
+assert len(over_muni) == len(overshoots)
+assert len(under_muni) == len(undershoots)
+
+# Group by muni and count
+over_df = over_muni.groupby('navn').size().to_frame('overshoots')
+
+under_df = under_muni.groupby('navn').size().to_frame('undershoots')
+
+# Combine with muni_network
+muni_network_counts = pd.merge(pd.merge(muni_network_counts, over_df,left_on='navn', right_on='navn'),under_df,left_on='navn', right_on='navn')
+#%%
+muni_network_counts['over_under'] = muni_network_counts.overshoots + muni_network_counts.undershoots
+
+#%%
+# TODO: Add label for high/low density and add as color
+fig = px.scatter(
+    muni_network_counts, 
+    x='infra_km', 
+    y='over_under',
+    title='Correlation between infrastructure length and topology errors', 
+    hover_data=['navn'],
+    labels={
+        "infra_km": "Length of bicycle infrastructure (KM)",
+        "over_under": "Over and undershoots",
+        "navn": "Municipality"
+        })
+fig.show()
+
+#%%
+df = px.data.gapminder().query("continent=='Oceania'")
+
+fig = px.line(df, x="year", y="lifeExp", color="country", title="layout.hovermode='closest' (the default)")
+fig.update_traces(mode="markers+lines")
+
+fig.show()
+#%%
+# TODO: spatially join to hex grid - or use h3 functionality?
 
 
-
-# TODO: Read in node ids of under/overshoots
-
-# TODO: assign under/over to grid cells
-
-# TODO: Same for missing edge comp?
+#%%
 
 # TODO: method for computing number of components in each muni
-
-# TODO: Count number of over/under and potential missing edge/comp connc. per muni
+# Use 'component_ids_ref'
+# Get a list of all comp ids in each muni (unique)
 
 # %%
+# TODO: correlation between all
