@@ -44,4 +44,7 @@ ref_edges_simp_joined = gpd.read_parquet(ref_edges_simplified_joined_fp)
 
 ref_nodes_simp_joined = gpd.read_parquet(ref_nodes_simplified_joined_fp)
 
+# Load dangling nodes
+ref_dangling = gpd.read_file(ref_results_data_fp+"dangling_nodes.gpkg")
+
 print("Reference data loaded successfully!")
