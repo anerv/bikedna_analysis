@@ -37,10 +37,10 @@ osm_nodes = gpd.read_parquet(osm_nodes_fp)
 osm_nodes.set_index("osmid", inplace=True)
 
 osm_edges = gpd.read_parquet(osm_edges_fp)
-#osm_edges.set_index(["u", "v", "key"], inplace=True)
+# osm_edges.set_index(["u", "v", "key"], inplace=True)
 
 osm_edges_simplified = gpd.read_parquet(osm_edges_simplified_fp)
-#osm_edges_simplified.set_index(["u", "v", "key"], inplace=True)
+# osm_edges_simplified.set_index(["u", "v", "key"], inplace=True)
 
 osm_nodes_simplified = gpd.read_parquet(osm_nodes_simplified_fp)
 osm_nodes_simplified.set_index("osmid", inplace=True)
@@ -53,5 +53,8 @@ osm_nodes_joined = gpd.read_parquet(osm_nodes_joined_fp)
 osm_edges_simp_joined = gpd.read_parquet(osm_edges_simplified_joined_fp)
 
 osm_nodes_simp_joined = gpd.read_parquet(osm_nodes_simplified_joined_fp)
+
+# Load dangling nodes
+osm_dangling = gpd.read_file(osm_results_data_fp + "dangling_nodes.gpkg")
 
 print("OSM data loaded successfully!")
