@@ -10,7 +10,56 @@ This script contain all functions used for evaluating and describing network com
 # import numpy as np
 # import matplotlib.pyplot as plt
 # from shapely.geometry import mapping, Polygon
-# import h3
+import h3
+
+
+def radius_to_k_ring(input_dist, h3_res):
+    """
+    input dist(numeric): desired distance in km
+
+    returns number of k-rings for desired distance band
+    """
+
+    ave_edge_length = h3.edge_length(h3_res)
+
+    print("The average edge length is:", ave_edge_length)
+
+    # One k-ring gives a distance band of approximately 2 edge lenghts
+    # plus 1 edge length at the end for the final ring
+    k = round((input_dist - ave_edge_length) / (2 * ave_edge_length))
+
+    final_dist = (k * 2 * ave_edge_length) + ave_edge_length
+    print(f"The distance band will have a radius {final_dist:.2f} km")
+
+    return k
+
+
+def get_local_network_length(grid, density_col, area_col, hex_ids):
+    """
+    get the total network length in the surrounding hexs and the cell itself
+    """
+
+    total_dens = grid[grid.hex_id.isin(hex_ids)][
+        density_col
+    ].mean()  # meters per square KM
+
+    area = grid[grid.hex_id.isin(hex_ids)][
+        area_col
+    ].sum()  # / 1000000 # area should be provided in square km
+
+    network_length = total_dens * area  # in meters
+
+    return network_length
+
+
+def get_local_errors(grid, error_col, hex_ids):
+    """
+    get the count of errors in the surrouding hexs and the cell itself
+    """
+
+    total_errors = grid[grid.hex_id.isin(hex_ids)][error_col].sum()  #
+
+    return total_errors
 
 
 # def create_h3_grid(polygon_gdf, hex_resolution, crs, buffer_dist):
@@ -25,7 +74,7 @@ This script contain all functions used for evaluating and describing network com
 #     hex_list=[]
 #     for n,g in enumerate(union_poly):
 #         temp = mapping(g)
-#         temp['coordinates']=[[[j[1],j[0]] for j in i] for i in temp['coordinates']]  
+#         temp['coordinates']=[[[j[1],j[0]] for j in i] for i in temp['coordinates']]
 #         hex_list.extend(h3.polyfill(temp,res=hex_resolution))
 
 #     # Create hexagon data frame
@@ -41,7 +90,6 @@ This script contain all functions used for evaluating and describing network com
 #     grid["grid_id"] = grid.hex_id
 
 #     return grid
-
 
 
 # def merge_results(grid, results_df, how):
@@ -282,7 +330,6 @@ This script contain all functions used for evaluating and describing network com
 def measure_infrastructure_length(
     edge, geometry_type, bidirectional, bicycle_infrastructure
 ):
-
     """
     Measure the infrastructure length of edges with bicycle infrastructure.
     If an edge represents a bidirectional lane/path or infrasstructure on both sides on a street,
@@ -616,7 +663,6 @@ def measure_infrastructure_length(
 #     assert gamma >= 0 and gamma <= 1
 
 #     return alpha, beta, gamma
-
 
 
 # def compute_edge_node_ratio(data_tuple):
