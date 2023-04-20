@@ -1,0 +1,5 @@
+TO-DOS
+
+- Analysis of extrinsic comparison (not muni)
+- Analysis of OSM patterns - 1 day
+- Combine results from missing tags and other results?
