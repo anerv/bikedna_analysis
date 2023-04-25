@@ -1,14 +1,65 @@
 # Results & interpretation
 
-## Differences per municipality
+## Differences aggregated on the municipal level
+
+TLDR: There are some trends - but also exceptions. We cannot say that OSM is *always* more extensive or with how much OSM will be more complete/extensive, but:
+
+### Completeness/infrastructure length
+
+- For all aspects compared, there are 96 municipalities where OSM is larger and 2 where GeoDK is larger.
+- The differences between the two dataset all between 1.5 - 94% (2.8 - 697 km) (Assens is a clear outlier with much more bike infra in GeoDK)
+- Average difference is around 130.6km/58%
+
+### Structure
+
+#### Components
+
+- 91 municipalities have more components in OSM, 7 in GeoDanmark
+- 37 have more components per km in OSM, 58 have more comp/km in GeoDanmark
+- The range for OSM is smaller than GeoDanmark (0.07 - 1.48 vs. 0.1 - 4.46)
+- It is a few outliers that produces the wide value range for GeoDK (Albertslund, Ishøj, and especially Vallensbæk)
+
+#### Topology errors
+
+**GeoDanmark has more errors per km than OSM:**
+
+- The OSM data has 91 overshoots in 37 municipalities and 157 undershoots in 50 municipalities.
+- The GeoDanmark data has 99 overshoots in 43 municipalities and 339 undershoots in 65 municipalities.
+- The OSM data has 0.04 overshoots and 0.07 undershoots per 10 km.
+- The GeoDanmark data has 0.11 overshoots and 0.38 undershoots per 10 km.
+- The discrepancy between the number of over and undershoots in the two data sets in many places suggest that it is errors.
+
+**Topology errors are unevenly distributed, and despite GeoDanmark generally having more errors per km, there are also municipalities where OSM has more errors:**
+
+- There are 28 municipalities with more overshoots in OSM than in GeoDanmark.
+- There are 31 municipalities with more overshoots GeoDanmark than in OSM.
+- There are 26 municipalities with more undershoots in OSM than in GeoDanmark.
+- There are 46 municipalities with more undershoots GeoDanmark than in OSM.
+
+## GeoDanmark - municipal analysis
+
+- There are a few municipalities with very different patterns than the majority (Aarhus)
+- Many of the correlations between network size, number of components, errors etc. make sense - *but* there patterns are not very consistent, many outliers or municipalities that do not fit the tendency.
+
+- Generally, the longer the network, the fewer components per km --> can both be a question of *network* and of *data* quality
+- Componets per km cannot be explained by municipality size/network density - at least only partially. Aarhus has more components per km than expected and Cph. fewer.
+- Geographically smaller municipalities tend to have more components per km, but this is mostly explained by their shorter network size, and a few outliers
+- Due to how GeoDanmark maps bike infra, it is hard to check for network gaps, but: clear outliers to the trend with more gaps with longer network: Cph and Odense have fewer than expected, Aarhus has more
+- Same holds for topology errors for Cph and Aarhus (less vs. more than expected from network size)
+
+## OSM - municipal analysis
+
+- Clear pattern between length and component gaps
+- No clear pattern between length or size and components per km
+- Clear pattern between length and number of components (but some outliers - Cph fewer than expected)
+- Correlation between size and number of components - but some outliers (Aarhus again more components than expected from size - but matches with length!)
+- Some weak correlation between length and errrors - but also many without errors regardless of length! Aarhus again has many errors - but corresponds with length
+
+*****
 
 ### Correlations
 
-- Are there any correlations between differences across different dimensions?
-
-TLDR: some trends - but also exceptions. Cannot say that OSM is always more extensive or with how much
-
-For all aspects compared, there are municipalities where OSM is larger/more and some where GeoDK is larger/more.
+- *Are there any correlations between differences across different dimensions?*
 
 More topology errors in GeoDK data - despite less infra (but small values/differences)
 
