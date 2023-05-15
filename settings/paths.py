@@ -1,6 +1,13 @@
 exec(open("../settings/yaml_variables.py").read())
 import pickle
 
+# STUDY AREA
+study_area_fp = f"../data/study_area_polygon/{study_area}/study_area_polygon.gpkg"
+
+# MUNICIPALITIES
+muni_polygons_fp = f"../data/municipalities/{study_area}/municipalities.gpkg"
+muni_pop_fp = f"../data/municipalities/{study_area}/muni_pop.csv"
+
 # OSM filepaths
 osm_processed_fp = f"../data/osm/{study_area}/processed/"
 
@@ -85,3 +92,5 @@ compare_results_data_fp = f"../results/compare/{study_area}/data/"
 # POPULATION RASTER FILEPATHS
 pop_fp_1 = "../data/population/dk/raw/GHS_POP_E2020_GLOBE_R2022A_54009_100_V1_0_R3_C19/GHS_POP_E2020_GLOBE_R2022A_54009_100_V1_0_R3_C19.tif"
 pop_fp_2 = "../data/population/dk/raw/GHS_POP_E2020_GLOBE_R2022A_54009_100_V1_0_R3_C20/GHS_POP_E2020_GLOBE_R2022A_54009_100_V1_0_R3_C20.tif"
+
+pop_processed_fp = "../data/population/dk/processed/"
