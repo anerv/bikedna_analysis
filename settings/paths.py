@@ -44,6 +44,8 @@ osm_results_inter_maps_fp = f"../results/osm/{study_area}/maps_interactive/"
 osm_results_plots_fp = f"../results/osm/{study_area}/plots/"
 osm_results_data_fp = f"../results/osm/{study_area}/data/"
 
+osm_grid_spatial_weights_fp = osm_processed_fp + "osm_grid_spatial_weights.csv"
+
 # Reference filepaths
 ref_processed_fp = f"../data/REFERENCE/{study_area}/processed/"
 
