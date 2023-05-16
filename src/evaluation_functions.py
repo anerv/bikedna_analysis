@@ -11,6 +11,7 @@ This script contain all functions used for evaluating and describing network com
 # import matplotlib.pyplot as plt
 # from shapely.geometry import mapping, Polygon
 import h3
+import pandas as pd
 
 
 def radius_to_k_ring(input_dist, h3_res):
@@ -61,6 +62,48 @@ def get_local_errors(grid, error_col, hex_ids):
 
     return total_errors
 
+def index_by_muni(gdf, muni, muni_cols=['navn','kommunekode'], assert_len=True, drop_dupli=False, dupli_id=None):
+
+    join = gdf.sjoin(muni, predicate="intersects", how="left")
+    join.drop('index_right',axis=1,inplace=True)
+
+    if len(join[join[muni_cols[0]].isna()]) > 0:
+
+        non_joined = join[join[muni_cols[0]].isna()].copy()
+
+        non_joined.drop(muni_cols,axis=1,inplace=True)
+
+        join_2 = non_joined.sjoin_nearest(muni, how="left")
+
+        if 'index_right' in join_2.columns:
+            join_2.drop('index_right',axis=1,inplace=True)
+
+        join.dropna(subset=muni_cols[0], inplace=True)
+
+        if drop_dupli:
+            join_2.drop_duplicates(subset=dupli_id, keep="first",inplace=True)
+            join.drop_duplicates(subset=dupli_id, keep="first",inplace=True)
+
+        if assert_len:
+            
+            assert len(join_2) + len(join) == len(gdf)
+
+        final_join = pd.concat([join,join_2])
+    
+    else:
+
+        if drop_dupli:
+            join.drop_duplicates(subset=dupli_id, keep="first",inplace=True)
+
+        final_join = join
+
+    if assert_len:
+        
+        assert len(final_join) == len(gdf)
+
+    assert len(final_join[final_join[muni_cols[0]].isna()]) == 0
+
+    return final_join
 
 # def create_h3_grid(polygon_gdf, hex_resolution, crs, buffer_dist):
 
