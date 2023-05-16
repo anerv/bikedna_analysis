@@ -1,4 +1,4 @@
 TO-DOS
 
 - Analysis of extrinsic comparison (not muni)
-- Analysis of OSM patterns and population - 1 day (pop grid)
+- Find alternative to matplotlib.cmap
