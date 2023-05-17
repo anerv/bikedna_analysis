@@ -91,6 +91,8 @@ compare_results_inter_maps_fp = f"../results/compare/{study_area}/maps_interacti
 compare_results_plots_fp = f"../results/compare/{study_area}/plots/"
 compare_results_data_fp = f"../results/compare/{study_area}/data/"
 
+extrinsic_grid_spatial_weights_fp = compare_processed_fp + "extrinsic_grid_spatial_weights.csv"
+
 # POPULATION RASTER FILEPATHS
 pop_fp_1 = "../data/population/dk/raw/GHS_POP_E2020_GLOBE_R2022A_54009_100_V1_0_R3_C19/GHS_POP_E2020_GLOBE_R2022A_54009_100_V1_0_R3_C19.tif"
 pop_fp_2 = "../data/population/dk/raw/GHS_POP_E2020_GLOBE_R2022A_54009_100_V1_0_R3_C20/GHS_POP_E2020_GLOBE_R2022A_54009_100_V1_0_R3_C20.tif"
