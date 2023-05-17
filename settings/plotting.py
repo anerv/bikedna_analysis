@@ -4,15 +4,15 @@ from matplotlib import cm, colors
 import matplotlib_inline.backend_inline
 
 
-# def set_renderer(f="svg"):
-#     matplotlib_inline.backend_inline.set_matplotlib_formats(f)
+def set_renderer(f="svg"):
+    matplotlib_inline.backend_inline.set_matplotlib_formats(f)
 
 
 # Plot and map renderers
 # Change renderer_map to svg to get crisp maps with the full vector data.
 # Do this only for small areas (sub-city) due to html/pdf size explosion!
-# renderer_map = "png"
-# renderer_plot = "svg"
+renderer_map = "png"
+renderer_plot = "svg"
 
 # Plot parameters
 mpl.rcParams["savefig.bbox"] = "tight"
@@ -148,7 +148,7 @@ pdict = {
 #     # GLOBAL SETTINGS FOR PLOTS
 #     "dpi": 300,  # resolution
 #     # matplotlib figure size for map plots of study area
-#     "fsmap": (13, 7.3125),
+     "fsmap": (13, 7.3125),
 #     # size for bar plots
 #     "fsbar": (8, 8),
 #     "fsbar_small": (4, 3.5),
