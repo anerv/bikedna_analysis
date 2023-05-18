@@ -169,7 +169,7 @@ def compute_spatial_autocorrelation(
 
         moran = esda.moran.Moran(df[c], spatial_weights)
         print(
-            f"With significance {moran.p_sim}, the Moran's I value for {v} is {moran.I}"
+            f"With significance {moran.p_sim}, the Moran's I value for {v} is {moran.I:.2f}"
         )
 
         morans[v] = moran
