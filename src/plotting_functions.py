@@ -25,7 +25,22 @@ def plot_scatter(
     colormap="viridis",
 ):
     """
-    Helper function from H3 tutorials: https://github.com/uber/h3-py-notebooks
+    Helper function for plotting vectorized raster data from H3 tutorials: https://github.com/uber/h3-py-notebooks
+
+    ...
+
+    Arguments:
+        df (dataframe): data to plot
+        metric_col (str): name of column with variable to base colormap on
+        x (str): name of column with x-coordinates
+        y (str): name of column with y-coordinates
+        marker (str): markertype for points
+        alpha (numeric): value between 0 and 1 for transparency
+        figsige (tuple): size of the figure
+        colormap (str): colormap to use for plotting the metric_col
+
+    Returns:
+        None
     """
     df.plot.scatter(
         x=x,

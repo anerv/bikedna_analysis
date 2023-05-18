@@ -20,6 +20,20 @@ import seaborn as sns
 
 
 def compute_spatial_weights(gdf, na_cols, w_type, dist=1000, k=6):
+    """
+    Wrapper function for computing the spatial weights for the analysis/results grids.
+    ...
+
+    Arguments:
+        gdf (geodataframe): geodataframe with hex grid
+        na_cols (list): list of columns used to drop NA rows. If no rows should be dropped, just use e.g. 'grid_index'
+        w_type (str): type of spatial weight to compute. Only supports KNN or a distance band.
+        dist (mumeric): distance to use if distance band
+        k (int): number of nearest neighbors if using KNN
+
+    Returns:
+        w (pysal spatial weight object): the spatial weight object
+    """
     gdf.dropna(subset=na_cols, inplace=True)
 
     # convert to centroids
@@ -47,6 +61,23 @@ def compute_spatial_weights(gdf, na_cols, w_type, dist=1000, k=6):
 
 def compute_lisa(col_names, variable_names, gdf, spatial_weights, filepaths, p=0.05):
     # based on https://geographicdata.science/book/notebooks/07_local_autocorrelation.html
+
+    """
+    Wrapper function for computing and plotting local spatial autocorrelation.
+    ...
+
+    Arguments:
+        col_names (list of str): names of cols for which local spatial autocorrelation should be computed
+        variable_names (list of str): name of variables (only to avoid using potentially long or confusing column names for print statements etc.)
+        gdf (geodataframe): geodataframe with hex grid
+        spatial_weights (pysal spatial weight object): the spatial weight object used in the computation
+        filepaths (list or str): list of filepaths for storing the plots
+        p (float): the desired pseudo p-value
+
+
+    Returns:
+        lisas (dict): dictionary with pysal lisas objects for all columns/variables
+    """
 
     lisas = {}
 
@@ -142,6 +173,21 @@ def compute_lisa(col_names, variable_names, gdf, spatial_weights, filepaths, p=0
 def compute_spatial_autocorrelation(
     col_names, variable_names, df, spatial_weights, filepaths
 ):
+    """
+    Wrapper function for computing and plotting global spatial autocorrelation (Moran's I)
+    ...
+
+    Arguments:
+        col_names (list of str): names of cols for which local spatial autocorrelation should be computed
+        variable_names (list of str): name of variables (only to avoid using potentially long or confusing column names for print statements etc.)
+        df (dataframe/geodataframe): dataframe or geodataframe with data
+        spatial_weights (pysal spatial weight object): the spatial weight object used in the computation
+        filepaths (list or str): list of filepaths for storing the plots
+
+
+    Returns:
+        morans (dict): dictionary with pysal morans objects for all columns/variables
+    """
     morans = {}
 
     for i, c in enumerate(col_names):
