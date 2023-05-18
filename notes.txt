@@ -2,3 +2,4 @@ TO-DOS
 
 - Analysis of extrinsic comparison (not muni)
 - Find alternative to matplotlib.cmap
+- documentation, functions

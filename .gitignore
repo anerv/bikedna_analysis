@@ -6,5 +6,7 @@ results/REFERENCE/
 results/COMPARE/
 *.pyc
 data/*
-results/geodk_quality/*
-results/osm_quality/*
+results/geodk_analysis/*
+results/osm_analysis/*
+results/compare_analysis/*
+results/ref_analysis/*
