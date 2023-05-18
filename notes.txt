@@ -1,5 +1,8 @@
 TO-DOS
 
-- Analysis of extrinsic comparison (not muni)
+- Analysis of extrinsic comparison (not muni) - Done?
+- Zoomed in plots of outliers
 - Find alternative to matplotlib.cmap
-- documentation, functions
+- documentation,
+- script for setting up folder structure
+- script for copying results etc. from bikedna_denmark folder
