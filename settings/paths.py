@@ -44,10 +44,8 @@ osm_results_inter_maps_fp = f"../results/osm/{study_area}/maps_interactive/"
 osm_results_plots_fp = f"../results/osm/{study_area}/plots/"
 osm_results_data_fp = f"../results/osm/{study_area}/data/"
 
-osm_grid_spatial_weights_fp = osm_processed_fp + "osm_grid_spatial_weights.csv"
-
 # Reference filepaths
-ref_processed_fp = f"../data/REFERENCE/{study_area}/processed/"
+ref_processed_fp = f"../data/reference/{study_area}/processed/"
 
 ref_graph_fp = ref_processed_fp + "ref_graph.graphml"
 ref_graph_simplified_fp = ref_processed_fp + "ref_simplified_graph.graphml"
@@ -68,33 +66,36 @@ ref_nodes_simplified_joined_fp = (
 
 ref_grid_fp = ref_processed_fp + "grid.parquet"
 ref_intrinsic_grid_fp = (
-    f"../results/REFERENCE/{study_area}/data/grid_results_intrinsic.pickle"
+    f"../results/reference/{study_area}/data/grid_results_intrinsic.pickle"
 )
 
-ref_intrinsic_fp = f"../results/REFERENCE/{study_area}/data/intrinsic_analysis.json"
+ref_intrinsic_fp = f"../results/reference/{study_area}/data/intrinsic_analysis.json"
 
-ref_results_fp = f"../results/REFERENCE/{study_area}/"
+ref_results_fp = f"../results/reference/{study_area}/"
 
-ref_results_static_maps_fp = f"../results/REFERENCE/{study_area}/maps_static/"
-ref_results_inter_maps_fp = f"../results/REFERENCE/{study_area}/maps_interactive/"
-ref_results_plots_fp = f"../results/REFERENCE/{study_area}/plots/"
-ref_results_data_fp = f"../results/REFERENCE/{study_area}/data/"
+ref_results_static_maps_fp = f"../results/reference/{study_area}/maps_static/"
+ref_results_inter_maps_fp = f"../results/reference/{study_area}/maps_interactive/"
+ref_results_plots_fp = f"../results/reference/{study_area}/plots/"
+ref_results_data_fp = f"../results/reference/{study_area}/data/"
 
 # COMPARE DATA FILEPATH
 compare_processed_fp = f"../data/compare/{study_area}/processed/"
 
 # COMPARE RESULTS FILEPATHS
-compare_results_fp = f"../results/REFERENCE/{study_area}/"
+compare_results_fp = f"../results/reference/{study_area}/"
 
 compare_results_static_maps_fp = f"../results/compare/{study_area}/maps_static/"
 compare_results_inter_maps_fp = f"../results/compare/{study_area}/maps_interactive/"
 compare_results_plots_fp = f"../results/compare/{study_area}/plots/"
 compare_results_data_fp = f"../results/compare/{study_area}/data/"
 
-extrinsic_grid_spatial_weights_fp = compare_processed_fp + "extrinsic_grid_spatial_weights.csv"
-
 # POPULATION RASTER FILEPATHS
-pop_fp_1 = "../data/population/dk/raw/GHS_POP_E2020_GLOBE_R2022A_54009_100_V1_0_R3_C19/GHS_POP_E2020_GLOBE_R2022A_54009_100_V1_0_R3_C19.tif"
-pop_fp_2 = "../data/population/dk/raw/GHS_POP_E2020_GLOBE_R2022A_54009_100_V1_0_R3_C20/GHS_POP_E2020_GLOBE_R2022A_54009_100_V1_0_R3_C20.tif"
+pop_fp_1 = f"../data/population/{study_area}/raw/GHS_POP_E2020_GLOBE_R2022A_54009_100_V1_0_R3_C19/GHS_POP_E2020_GLOBE_R2022A_54009_100_V1_0_R3_C19.tif"
+pop_fp_2 = f"../data/population/{study_area}/raw/GHS_POP_E2020_GLOBE_R2022A_54009_100_V1_0_R3_C20/GHS_POP_E2020_GLOBE_R2022A_54009_100_V1_0_R3_C20.tif"
 
 pop_processed_fp = "../data/population/dk/processed/"
+
+# ANALYSIS FILEPATHS
+compare_analysis_fp = f"../results/compare_analysis/{study_area}/"
+osm_analysis_fp = f"../results/osm_analysis/{study_area}/"
+ref_analysis_fp = f"../results/ref_analysis/{study_area}/"
