@@ -12,6 +12,171 @@ This script contain all functions used for evaluating and describing network com
 # from shapely.geometry import mapping, Polygon
 import h3
 import pandas as pd
+import matplotlib.pyplot as plt
+from pysal.explore import esda
+from pysal.lib import weights
+from splot.esda import lisa_cluster
+import seaborn as sns
+
+
+def compute_spatial_weights(gdf, na_cols, w_type, dist=1000, k=6):
+    gdf.dropna(subset=na_cols, inplace=True)
+
+    # convert to centroids
+    cents = gdf.centroid
+
+    # Extract coordinates into an array
+    pts = pd.DataFrame({"X": cents.x, "Y": cents.y}).values
+
+    if w_type == "dist":
+        w = weights.distance.DistanceBand.from_array(pts, dist, binary=False)
+
+    if w_type == "knn":
+        w = weights.distance.KNN.from_array(pts, k=k)
+
+    else:
+        print("no valid type defined")
+
+        pass
+
+    # row standardize
+    w.transform = "R"
+
+    return w
+
+
+def compute_lisa(col_names, variable_names, gdf, spatial_weights, filepaths, p=0.05):
+    # based on https://geographicdata.science/book/notebooks/07_local_autocorrelation.html
+
+    lisas = {}
+
+    significance_labels = {}
+
+    for i, c in enumerate(col_names):
+        v = variable_names[i]
+
+        lisa = esda.moran.Moran_Local(gdf[c], spatial_weights)
+
+        lisas[v] = lisa
+
+        sig = 1 * (lisa.p_sim < p)
+
+        spots = lisa.q * sig
+
+        # Mapping from value to name (as a dict)
+        spots_labels = {
+            0: "Non-Significant",
+            1: "HH",
+            2: "LH",
+            3: "LL",
+            4: "HL",
+        }
+        gdf[f"{v}_q"] = pd.Series(spots, index=gdf.index).map(spots_labels)
+
+        f, axs = plt.subplots(nrows=2, ncols=2, figsize=(20, 20))
+        axs = axs.flatten()
+
+        ax = axs[0]
+
+        gdf.assign(Is=lisa.Is).plot(
+            column="Is",
+            cmap="plasma",
+            scheme="quantiles",
+            k=2,
+            edgecolor="white",
+            linewidth=0.1,
+            alpha=0.75,
+            legend=True,
+            ax=ax,
+        )
+
+        ax = axs[1]
+
+        lisa_cluster(lisa, gdf, p=1, ax=ax)
+
+        ax = axs[2]
+        labels = pd.Series(1 * (lisa.p_sim < p), index=gdf.index).map(
+            {1: "Significant", 0: "Non-Significant"}
+        )
+        gdf.assign(cl=labels).plot(
+            column="cl",
+            categorical=True,
+            k=2,
+            cmap="Paired",
+            linewidth=0.1,
+            edgecolor="white",
+            legend=True,
+            ax=ax,
+        )
+
+        significance_labels[v] = labels
+
+        ax = axs[3]
+        lisa_cluster(lisa, gdf, p=p, ax=ax)
+
+        for z, ax in enumerate(axs.flatten()):
+            ax.set_axis_off()
+            ax.set_title(
+                [
+                    "Local Statistics",
+                    "Scatterplot Quadrant",
+                    "Statistical Significance",
+                    "Moran Cluster Map",
+                ][z],
+                y=0,
+            )
+
+        f.suptitle(
+            f"Local Spatial Autocorrelation for differences in: {v}", fontsize=16
+        )
+
+        f.tight_layout()
+
+        f.savefig(filepaths[i])
+
+        plt.show()
+
+    return lisas
+
+
+def compute_spatial_autocorrelation(
+    col_names, variable_names, df, spatial_weights, filepaths
+):
+    morans = {}
+
+    for i, c in enumerate(col_names):
+        v = variable_names[i]
+
+        # compute spatial lag
+        df[f"{v}_lag"] = weights.spatial_lag.lag_spatial(spatial_weights, df[c])
+
+        fig, ax = plt.subplots(1, figsize=(7, 7))
+
+        sns.regplot(
+            x=c,
+            y=f"{v}_lag",
+            ci=None,
+            data=df,
+            line_kws={"color": "r"},
+            scatter_kws={"alpha": 0.4},
+            color="black",
+        )
+
+        ax.axvline(0, c="k", alpha=0.5)
+        ax.axhline(0, c="k", alpha=0.5)
+        ax.set_title(f"Moran Plot - {v}")
+        plt.show()
+
+        moran = esda.moran.Moran(df[c], spatial_weights)
+        print(
+            f"With significance {moran.p_sim}, the Moran's I value for {v} is {moran.I}"
+        )
+
+        morans[v] = moran
+
+        fig.savefig(filepaths[i])
+
+    return morans
 
 
 def radius_to_k_ring(input_dist, h3_res):
@@ -62,48 +227,52 @@ def get_local_errors(grid, error_col, hex_ids):
 
     return total_errors
 
-def index_by_muni(gdf, muni, muni_cols=['navn','kommunekode'], assert_len=True, drop_dupli=False, dupli_id=None):
 
+def index_by_muni(
+    gdf,
+    muni,
+    muni_cols=["navn", "kommunekode"],
+    assert_len=True,
+    drop_dupli=False,
+    dupli_id=None,
+):
     join = gdf.sjoin(muni, predicate="intersects", how="left")
-    join.drop('index_right',axis=1,inplace=True)
+    join.drop("index_right", axis=1, inplace=True)
 
     if len(join[join[muni_cols[0]].isna()]) > 0:
-
         non_joined = join[join[muni_cols[0]].isna()].copy()
 
-        non_joined.drop(muni_cols,axis=1,inplace=True)
+        non_joined.drop(muni_cols, axis=1, inplace=True)
 
         join_2 = non_joined.sjoin_nearest(muni, how="left")
 
-        if 'index_right' in join_2.columns:
-            join_2.drop('index_right',axis=1,inplace=True)
+        if "index_right" in join_2.columns:
+            join_2.drop("index_right", axis=1, inplace=True)
 
         join.dropna(subset=muni_cols[0], inplace=True)
 
         if drop_dupli:
-            join_2.drop_duplicates(subset=dupli_id, keep="first",inplace=True)
-            join.drop_duplicates(subset=dupli_id, keep="first",inplace=True)
+            join_2.drop_duplicates(subset=dupli_id, keep="first", inplace=True)
+            join.drop_duplicates(subset=dupli_id, keep="first", inplace=True)
 
         if assert_len:
-            
             assert len(join_2) + len(join) == len(gdf)
 
-        final_join = pd.concat([join,join_2])
-    
-    else:
+        final_join = pd.concat([join, join_2])
 
+    else:
         if drop_dupli:
-            join.drop_duplicates(subset=dupli_id, keep="first",inplace=True)
+            join.drop_duplicates(subset=dupli_id, keep="first", inplace=True)
 
         final_join = join
 
     if assert_len:
-        
         assert len(final_join) == len(gdf)
 
     assert len(final_join[final_join[muni_cols[0]].isna()]) == 0
 
     return final_join
+
 
 # def create_h3_grid(polygon_gdf, hex_resolution, crs, buffer_dist):
 
