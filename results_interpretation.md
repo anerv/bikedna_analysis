@@ -1,5 +1,16 @@
 # Results & interpretation
 
+## Feature matching & Density differences
+
+- no clear pattern in diff and length of matched features - some tendency to have more matched features where diff is small
+- clear tendency that the higher the differences are (negative values) the more unmatched osm features there are
+- opposite pattern for reference data - and a little less clear cut
+- outliers with high unmatched values around 0 edge dens diff -> clear indication of why FM matters
+- outliers with a lot of unmatched ref despite more OSM data (minus dens, high umatched) - also shows diff features
+- outliers with high pos diff and high pos unmatched ref - OSM is missing
+
+***
+
 ## Differences aggregated on the municipal level
 
 TLDR: There are some trends - but also exceptions. We cannot say that OSM is *always* more extensive or with how much OSM will be more complete/extensive, but:
