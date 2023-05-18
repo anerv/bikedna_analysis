@@ -5,8 +5,8 @@ import pickle
 study_area_fp = f"../data/study_area_polygon/{study_area}/study_area_polygon.gpkg"
 
 # MUNICIPALITIES
-muni_polygons_fp = f"../data/municipalities/{study_area}/municipalities.gpkg"
-muni_pop_fp = f"../data/municipalities/{study_area}/muni_pop.csv"
+muni_polygons_fp = f"../data/municipalities/{study_area}/raw/municipalities.gpkg"
+muni_pop_fp = f"../data/municipalities/{study_area}/raw/muni_pop.csv"
 
 # OSM filepaths
 osm_processed_fp = f"../data/osm/{study_area}/processed/"
