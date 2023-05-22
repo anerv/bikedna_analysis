@@ -1,5 +1,6 @@
 # Run this file while in the main folder
 
+# %%
 import os
 import yaml
 import shutil
@@ -9,7 +10,7 @@ with open(r"config.yml") as file:
 
     study_area = parsed_yaml_file["study_area"]
 
-
+# %%
 main_folders = [
     "data2/",
     "results2/",
@@ -25,45 +26,59 @@ for p in main_folders:
         print("Successfully created folder " + p)
 
 
+# %%
 new_data_folders = main_folders[2:4]
 
 for n in new_data_folders:
+    sa_folder = n + f"{study_area}/"
+    if not os.path.exists(sa_folder):
+        os.mkdir(sa_folder)
+        print("Successfully created folder " + sa_folder)
     for i in ["processed", "raw"]:
-        folder = n + f"{study_area}/{i}/"
-        if not os.path.exists(folder):
-            os.mkdir(folder)
-            print("Successfully created folder " + folder)
+        sa_subfolder = n + f"{study_area}/{i}/"
+        if not os.path.exists(sa_subfolder):
+            os.mkdir(sa_subfolder)
+            print("Successfully created folder " + sa_subfolder)
 
+# %%
 new_results_folders = main_folders[4:]
 
 for n in new_results_folders:
-    for i in ["data", "plots"]:
-        folder = n + f"{study_area}/{i}/"
-        if not os.path.exists(folder):
-            os.mkdir(folder)
-            print("Successfully created folder " + folder)
+    sa_folder = n + f"{study_area}/"
+    if not os.path.exists(sa_folder):
+        os.mkdir(sa_folder)
+        print("Successfully created folder " + sa_folder)
 
+    for i in ["data", "plots"]:
+        sa_subfolder = n + f"{study_area}/{i}/"
+        if not os.path.exists(sa_subfolder):
+            os.mkdir(sa_subfolder)
+            print("Successfully created folder " + sa_subfolder)
+
+# %%
+
+# TODO: Update paths - save results to plots and data folders
 
 # TODO: muni and pop are filled manually
 
 # TODO: copy data from bikedna folder - is there already a data folder? yes
 
 # TODO: copy results folder over - make folder names lower case
-# TODO: copy study area to data
 
 
-source = f"{study_area}/processed/"
-destination = f"../data/COMPARE/{study_area}/processed/"
+source_data = "/Users/anev/Dropbox/ITU/repositories/bikedna_denmark/data/"
+source_results = "/Users/anev/Dropbox/ITU/repositories/bikedna_denmark/results/"
 
-files = os.listdir(source)
+sources = [source_data, source_results]
 
-for f in files:
-    shutil.move(source + f, destination)
+destination_data = "data2/"
+destination_results = "results2/"
 
-source = f"{study_area}/results/"
-destination = f"../results/COMPARE/{study_area}/data/"
+destinations = [destination_data, destination_results]
 
-files = os.listdir(source)
+for s, d in zip(sources, destinations):
+    files = os.listdir(s)
 
-for f in files:
-    shutil.move(source + f, destination)
+    for f in files:
+        shutil.copyfile(s + f, d)
+# %%
