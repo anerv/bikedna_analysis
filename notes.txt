@@ -4,6 +4,7 @@ TO-DOS
 - Zoomed in plots of outliers
 - Find alternative to matplotlib.cmap
 - documentation/README
+- redo some plots - decide when paper draft ready
+
 - script for setting up folder structure
 - script for copying results etc. from bikedna_denmark folder
-- redo some plots - decide when paper draft ready
