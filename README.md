@@ -2,14 +2,11 @@
 
 This repository contains the code for analyzing the results from running [BikeDNA](https://github.com/anerv/BikeDNA) on nationwide data for Denmark, comparing data from [OpenStreetMap](https://www.openstreetmap.org/) (OSM) and [GeoDenmark](https://www.geodanmark.dk/).
 
+# TODO
+
 WHAT IT FOCUSES ON - spatial patterns
 
-3. run data folder script
-4. Add input data
-    - muni
-    - pop data
-
-5. Run notebooks
+# TODO: ADD FIGURE/ILLUSTRATION
 
 ## 0. Run BikeDNA
 
@@ -97,10 +94,14 @@ To validate that the results and data were successfully copied to this directory
 
 # UPDATE - provide population rasters and municipality data
 
+In addition to the input data from BikeDNA, the analysis makes use of:
+
+* A dataset with muncipal boundaries
+
 Once the folders have been created, provide:  
 
-- a polygon defining the study area  
-- for the extrinsic analysis (optional): a reference data set
+* a polygon defining the study area  
+* for the extrinsic analysis (optional): a reference data set
 
 ## III. Analysis
 
@@ -114,22 +115,21 @@ All analysis notebooks are in the [`scripts`](scripts) folder.
 
 ### OSM
 
-- osm_muni
-- osm_tags
+* osm_muni
+* osm_tags
 
 ### GeoDanmark
 
-- geodanmark muni
+* geodanmark muni
 
 ### Compare
 
-- analysis-compare
-- analysis-muni
+* analysis-compare
+* analysis-muni
 
-# TODO UPDATE WARNING
 >
 > **Warning**
-> Most notebooks can be run independently, but both they must both be run before the notebooks under 'Compare'.
+> Most notebooks can be run independently, but both `municipal_analysis_OSM.ipynb` and `municipal_analysis_reference.ipynb` must be run before `municipal_comparison.ipynb`.
 
 ## Get in touch
 
