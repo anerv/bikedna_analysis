@@ -10,6 +10,8 @@ with open(r"config.yml") as file:
     parsed_yaml_file = yaml.load(file, Loader=yaml.FullLoader)
 
     study_area = parsed_yaml_file["study_area"]
+    source_data = parsed_yaml_file["bikedna_data_filepath"]
+    source_results = parsed_yaml_file["results_data_filepath"]
 
 # %%
 main_folders = [
@@ -59,9 +61,6 @@ for n in new_results_folders:
 # %%
 
 # TODO: copy results folder over - make folder names lower case
-
-source_data = "/Users/anev/Dropbox/ITU/repositories/bikedna_denmark/data/"
-source_results = "/Users/anev/Dropbox/ITU/repositories/bikedna_denmark/results/"
 
 sources = [source_data, source_results]
 

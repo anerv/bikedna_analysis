@@ -21,6 +21,11 @@ study_crs: 'EPSG:25832' # The CRS you want to use for the analysis.
 # If 'low', plots are saved as png. If 'high', plots are saved as svg (this will lead to significantly larger files)
 plot_resolution: 'low'
 
+# Filepaths with the data and results from running BikeDNA
+bikedna_data_filepath: "/Users/anev/Dropbox/ITU/repositories/bikedna_denmark/data/"
+results_data_filepath: "/Users/anev/Dropbox/ITU/repositories/bikedna_denmark/results/"
+
+
 # # Queries used to retrieve the network edges with dedicated bicycle infrastructure from OSM street network data. Update as needed.
 # bicycle_infrastructure_queries:
 #   A:
