@@ -9,4 +9,5 @@ data/*
 results/geodk_analysis/*
 results/osm_analysis/*
 results/compare_analysis/*
-results/ref_analysis/*
+results_old/*
+data_old/*
