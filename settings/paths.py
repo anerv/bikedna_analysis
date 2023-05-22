@@ -99,3 +99,12 @@ pop_processed_fp = "../data/population/dk/processed/"
 compare_analysis_fp = f"../results/compare_analysis/{study_area}/"
 osm_analysis_fp = f"../results/osm_analysis/{study_area}/"
 ref_analysis_fp = f"../results/ref_analysis/{study_area}/"
+
+compare_analysis_plots_fp = compare_analysis_fp + "plots/"
+compare_analyis_data_fp = compare_analysis_fp + "data/"
+
+osm_analysis_plots_fp = osm_analysis_fp + "plots/"
+osm_analyis_data_fp = osm_analysis_fp + "data/"
+
+ref_analysis_plots_fp = ref_analysis_fp + "plots/"
+ref_analyis_data_fp = ref_analysis_fp + "data/"

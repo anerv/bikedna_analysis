@@ -1,3 +1,4 @@
+
 # Run this file while in the main folder
 
 # %%
@@ -57,14 +58,7 @@ for n in new_results_folders:
 
 # %%
 
-# TODO: Update paths - save results to plots and data folders
-
-# TODO: muni and pop are filled manually
-
-# TODO: copy data from bikedna folder - is there already a data folder? yes
-
 # TODO: copy results folder over - make folder names lower case
-
 
 source_data = "/Users/anev/Dropbox/ITU/repositories/bikedna_denmark/data/"
 source_results = "/Users/anev/Dropbox/ITU/repositories/bikedna_denmark/results/"
