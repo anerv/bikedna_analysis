@@ -1,13 +1,7 @@
 *.egg-info
 *.DS_Store
 *.parquet
-results/OSM/
-results/REFERENCE/
-results/COMPARE/
+results/*
 *.pyc
 data/*
-results/geodk_analysis/*
-results/osm_analysis/*
-results/compare_analysis/*
-results_old/*
-data_old/*
+
