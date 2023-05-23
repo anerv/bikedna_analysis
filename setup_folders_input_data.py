@@ -1,7 +1,5 @@
-
 # Run this file while in the main folder
 
-# %%
 import os
 import yaml
 import shutil
@@ -13,15 +11,15 @@ with open(r"config.yml") as file:
     source_data = parsed_yaml_file["bikedna_data_filepath"]
     source_results = parsed_yaml_file["results_data_filepath"]
 
-# %%
+
 main_folders = [
-    "data2/",
-    "results2/",
-    "data2/municipalities/",
-    "data2/population/",
-    "results2/compare_analysis/",
-    "results2/osm_analysis/",
-    "results2/ref_analysis/",
+    "data/",
+    "results/",
+    "data/municipalities/",
+    "data/population/",
+    "results/compare_analysis/",
+    "results/osm_analysis/",
+    "results/ref_analysis/",
 ]
 for p in main_folders:
     if not os.path.exists(p):
@@ -29,7 +27,6 @@ for p in main_folders:
         print("Successfully created folder " + p)
 
 
-# %%
 new_data_folders = main_folders[2:4]
 
 for n in new_data_folders:
@@ -43,7 +40,6 @@ for n in new_data_folders:
             os.mkdir(sa_subfolder)
             print("Successfully created folder " + sa_subfolder)
 
-# %%
 new_results_folders = main_folders[4:]
 
 for n in new_results_folders:
@@ -58,20 +54,25 @@ for n in new_results_folders:
             os.mkdir(sa_subfolder)
             print("Successfully created folder " + sa_subfolder)
 
-# %%
-
-# TODO: copy results folder over - make folder names lower case
-
 sources = [source_data, source_results]
 
-destination_data = "data2/"
-destination_results = "results2/"
+destination_data = "data/"
+destination_results = "results/"
 
 destinations = [destination_data, destination_results]
 
-for s, d in zip(sources, destinations):
-    files = os.listdir(s)
+for src, dst in zip(sources, destinations):
+    shutil.copytree(src, dst, dirs_exist_ok=True)
+    print(f"Successfully copied data from {src} to {dst}")
 
-    for f in files:
-        shutil.copyfile(s + f, d)
-# %%
+folder_names = os.listdir("data/")
+folder_names = ["data/" + f for f in folder_names]
+
+for f in folder_names:
+    os.rename(f, f.lower())
+
+folder_names = os.listdir("results/")
+folder_names = ["results/" + f for f in folder_names]
+
+for f in folder_names:
+    os.rename(f, f.lower())
