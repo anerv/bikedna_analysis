@@ -1,12 +1,12 @@
+<p align="center"><img src="images/BikeDNA_logo.svg" width="50%" alt="BikeDNA logo"/></p>
+
 # Analysis of BikeDNA Denmark
 
 This repository contains the code for analyzing the results from running [BikeDNA](https://github.com/anerv/BikeDNA) on nationwide data for Denmark, comparing data from [OpenStreetMap](https://www.openstreetmap.org/) (OSM) and [GeoDenmark](https://www.geodanmark.dk/).
 
-# TODO
+The analysis focuses on detecting spatial patterns in the data quality, looking at for example correlations between the municipality and the quality of the local data, correlations between OSM quality and population density, and identifying areas with large differences between the two data sources.
 
-WHAT IT FOCUSES ON - spatial patterns
-
-# TODO: ADD FIGURE/ILLUSTRATION
+<!-- TODO: ADD FIGURE/ILLUSTRATION -->
 
 ## 0. Run BikeDNA
 
@@ -72,16 +72,13 @@ Plot settings can be changed in [`scripts/settings/plotting.py`](scripts/setting
 Next, to create the required folder structure and to copy the results from running BikeDNA, navigate to the main folder in a terminal window and run the Python file `setup_folders_input_data.py`
 
 ```python
-python setup_folders.py
+python setup_folders_input_data.py
 ```
 
 This should return:
 
 ```python
-Successfully created folder data/
-Successfully created folder results/
-Successfully created folder data/municipalities/
-Successfully created folder data/population/
+...
 Successfully created folder results/compare_analysis/
 Successfully created folder results/osm_analysis/
 Successfully created folder results/ref_analysis/
@@ -92,16 +89,22 @@ To validate that the results and data were successfully copied to this directory
 
 ### Provide/Prepare data sets
 
-# UPDATE - provide population rasters and municipality data
-
 In addition to the input data from BikeDNA, the analysis makes use of:
 
-* A dataset with muncipal boundaries
+* A dataset with muncipal boundaries: `municipalities.gpkg`
+* A dataset with the total population in each municipality: `muni_pop.csv`
+* Population rasters with the local population density
 
-Once the folders have been created, provide:  
+These data sets are already provided as part of this repository. If other datasets are to be used, once the folders have been created:
 
-* a polygon defining the study area  
-* for the extrinsic analysis (optional): a reference data set
+* remove the existing data files
+* place the files `municipalities.gpkg` and `muni_pop.csv` in the folder data > municipalities > 'study_area' > raw
+* place the population rasters in the folder data > population > 'study_area' > raw
+* specify the name of the population rasters in config.yml
+
+>
+> **Warning**
+> The notebooks making use of the municipal and population input data are at the moment hardcoded to use the datasets provided on this reposity, with municipal boundaries for Denmark from Dataforsyningen, municipal population data from [Statistics Denmark](<https://www.dst.dk/da/>), and population rasters from the [Global Human Settlement Layer (GHSL)](<https://ghsl.jrc.ec.europa.eu/ghs_pop2023.php>).
 
 ## III. Analysis
 
@@ -109,27 +112,27 @@ Once the folders have been created, provide:
 
 All analysis notebooks are in the [`scripts`](scripts) folder.
 
-# TODO
+#### Population
 
-### Population
+* **`pop_grid.ipynb`:** This notebook processes the population rasters and converts the data into H3 hexagons at the chosen resolutions.
 
-### OSM
+#### OSM
 
-* osm_muni
-* osm_tags
+* **`OSM_tags.ipynb`:** The notebook runs an analysis of spatial patterns in existing and missing tags in the OSM data.
+* **`municipal_analysis_OSM.ipynb`:** The notebook indexes the results of the intrinsic analysis of OSM by municipality and examines correlations between municipality and high/low data quality.
 
-### GeoDanmark
+#### GeoDanmark
 
-* geodanmark muni
+* **`municipal_analysis_reference.ipynb`:** The notebook indexes the results of the intrinsic analysis of the GeoDanmark data by municipality and examines correlations between municipality and high/low data quality.
 
-### Compare
+#### Compare
 
-* analysis-compare
-* analysis-muni
+* **`municipal_comparison.ipynb`:** Compares the outcome of the notebooks looking at the quality and completeness at the municipal level.
+* **`extrinsic_analysis.ipynb`:** Looks at spatial patterns in differences between the two data sets, and contrats the findings with areas of high and low population density.
 
 >
 > **Warning**
-> Most notebooks can be run independently, but both `municipal_analysis_OSM.ipynb` and `municipal_analysis_reference.ipynb` must be run before `municipal_comparison.ipynb`.
+> Most notebooks can be run independently, but both `municipal_analysis_OSM.ipynb` and `municipal_analysis_reference.ipynb` must be run before `municipal_comparison.ipynb`, and `pop_grid.ipynb` must be run before `extrinsic_analysis.ipynb`.
 
 ## Get in touch
 
@@ -147,11 +150,37 @@ The repository includes test data from the following sources:
 © OpenStreetMap contributors  
 License: [Open Data Commons Open Database License](https://opendatacommons.org/licenses/odbl/)
 
+Downloaded spring 2023.
+
 ### GeoDanmark
 
 Contains data from GeoDanmark (retrieved spring 2022)
-© SDFE (Styrelsen for Dataforsyning og Effektivisering og Danske kommuner)  
+© SDFI (Styrelsen for Dataforsyning og Infrastruktur)  
 License: [GeoDanmark](https://www.geodanmark.dk/wp-content/uploads/2022/08/Vilkaar-for-brug-af-frie-geografiske-data_GeoDanmark-grunddata-august-2022.pdf)
+
+Downloaded spring 2023.
+
+### Dataforsyningen
+
+© SDFI (Styrelsen for Dataforsyning og Infrastruktur)
+License: [Vilkår for brug af frie geografiske data](https://dataforsyningen.dk/asset/PDF/rettigheder_vilkaar/Vilk%C3%A5r%20for%20brug%20af%20frie%20geografiske%20data.pdf)
+
+Downloaded spring 2023.
+
+### Statistics Denmark
+
+Contains data from Statistics Denmark - <https://statistikbanken.dk/folk1a>
+
+Downloaded spring 2023.
+
+### GHSL
+
+Contains data from the European Commision's [GHSL (Global Human Settlement Layer)](https://ghsl.jrc.ec.europa.eu/download.php?ds=pop)
+
+Schiavina M., Freire S., Carioli A., MacManus K. (2023):
+GHS-POP R2023A - GHS population grid multitemporal (1975-2030).European Commission, Joint Research Centre (JRC).
+
+Downloaded fall 2022.
 
 ## Credits
 
