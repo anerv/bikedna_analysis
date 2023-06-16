@@ -5,3 +5,5 @@ results/*
 *.pyc
 data/*
 
+plot_data.py
+data_for_maps/*
