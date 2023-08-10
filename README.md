@@ -4,7 +4,9 @@
 
 This repository contains the code for analyzing the results from running [BikeDNA](https://github.com/anerv/BikeDNA) on nationwide data for Denmark, comparing data from [OpenStreetMap](https://www.openstreetmap.org/) (OSM) and [GeoDenmark](https://www.geodanmark.dk/).
 
-The analysis focuses on detecting spatial patterns in the data quality, looking at for example correlations between the municipality and the quality of the local data, correlations between OSM quality and population density, and identifying areas with large differences between the two data sources.
+<!-- TODO: UPDATE TEXT HERE -->
+
+The analysis focuses on detecting spatial patterns in the data quality, looking at, for example, correlations between the municipality and the quality of the local data, correlations between OSM quality and population density, and identifying areas with large differences between the two data sources.
 
 <!-- TODO: ADD FIGURE/ILLUSTRATION -->
 
