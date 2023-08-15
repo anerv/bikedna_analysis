@@ -5,5 +5,7 @@ results/*
 *.pyc
 data/*
 
-plot_data.py
-data_for_maps/*
+plots_for_paper/*.gpkg
+plots_for_paper/*.csv
+plots_for_paper/*.svg
+plots_for_paper/paper_illustrations/*
