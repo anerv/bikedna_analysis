@@ -1,6 +1,6 @@
 # %%
 """
-Create data sets for maps made in QGIS
+Export data sets for maps made in QGIS
 """
 
 import geopandas as gpd
