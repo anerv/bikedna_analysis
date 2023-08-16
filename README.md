@@ -132,6 +132,10 @@ All analysis notebooks are in the [`scripts`](scripts) folder.
 * **`municipal_comparison.ipynb`:** Compares the outcome of the notebooks looking at the quality and completeness at the municipal level.
 * **`extrinsic_analysis.ipynb`:** Looks at spatial patterns in differences between the two data sets, and contrats the findings with areas of high and low population density.
 
+## Results
+
+<!-- TODO: ADD GUIDE TO WHERE TO FIND RESULTS -->
+
 >
 > **Warning**
 > Most notebooks can be run independently, but both `municipal_analysis_OSM.ipynb` and `municipal_analysis_reference.ipynb` must be run before `municipal_comparison.ipynb`, and `pop_grid.ipynb` must be run before `extrinsic_analysis.ipynb`.
@@ -145,7 +149,7 @@ Reach us at <anev@itu.dk> (Ane Rahbek Vierø) or <anvy@itu.dk> (Anastassia Vybor
 
 **Our code is free to use and repurpose under the [AGPL 3.0 license](https://www.gnu.org/licenses/agpl-3.0.html).**
 
-The repository includes test data from the following sources:
+The repository includes data from the following sources:
 
 ### OpenStreetMap
 

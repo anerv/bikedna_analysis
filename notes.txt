@@ -1,5 +1,0 @@
-TO-DOS
-
-- Find alternative to matplotlib.cmap
-- redo some plots - decide when paper draft ready
-- make webmap of results
