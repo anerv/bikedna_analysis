@@ -90,8 +90,10 @@ compare_results_plots_fp = f"../results/compare/{study_area}/plots/"
 compare_results_data_fp = f"../results/compare/{study_area}/data/"
 
 # POPULATION RASTER FILEPATHS
+# If only one raster is used, set the value of pop_fp_2 to None
 pop_fp_1 = f"../data/population/{study_area}/raw/GHS_POP_E2020_GLOBE_R2022A_54009_100_V1_0_R3_C19/GHS_POP_E2020_GLOBE_R2022A_54009_100_V1_0_R3_C19.tif"
 pop_fp_2 = f"../data/population/{study_area}/raw/GHS_POP_E2020_GLOBE_R2022A_54009_100_V1_0_R3_C20/GHS_POP_E2020_GLOBE_R2022A_54009_100_V1_0_R3_C20.tif"
+# Add more filepaths/rasters as necessary
 
 pop_processed_fp = "../data/population/dk/processed/"
 
