@@ -104,7 +104,7 @@ def compute_lisa(col_names, variable_names, gdf, spatial_weights, filepaths, p=0
         }
         gdf[f"{v}_q"] = pd.Series(spots, index=gdf.index).map(spots_labels)
 
-        f, axs = plt.subplots(nrows=2, ncols=2, figsize=(20, 20))
+        f, axs = plt.subplots(nrows=2, ncols=2, figsize=(15, 15))
         axs = axs.flatten()
 
         ax = axs[0]
@@ -196,7 +196,7 @@ def compute_spatial_autocorrelation(
         # compute spatial lag
         df[f"{v}_lag"] = weights.spatial_lag.lag_spatial(spatial_weights, df[c])
 
-        fig, ax = plt.subplots(1, figsize=(7, 7))
+        fig, ax = plt.subplots(1, figsize=(5, 5))
 
         sns.regplot(
             x=c,
