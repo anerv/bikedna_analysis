@@ -1,24 +1,24 @@
 # TO-DOS
 
-- test script for moving/copying data
+1. format all files and notebooks:
 
-- rerun all scripts to make sure that they work (all data in place) (including export data!)
+- extrinsic_analysis
+- ~~municipal analysis OSM~~
+- ~~municipal analysis reference~~
+- ~~OSM tags~~
+- ~~pop grid~~
+- ~~spatial weights sensitivity~~
 
-- update README
+2. test script for moving/copying data
 
-- delete unused, commented-out code
+3. rerun all scripts to make sure that they work (all data in place) (including export data!)
 
-- format all files and notebooks
+4. update README
 
-- make web-maps
+5. check gitignore - what to include/exclude
 
-- check gitignore - what to include/exclude
+6. clean up - only produce plots that we use in paper..?
 
-- clean up - only produce plots that we use in paper..?
+7. delete unused, commented-out code
 
-  - extrinsic_analysis
-  - municipal analysis OSM
-  - municipal analysis reference
-  - OSM tags
-  - ~~pop grid~~
-  - spatial weights sensitivity
+8. make web-maps
