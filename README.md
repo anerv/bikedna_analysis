@@ -5,6 +5,7 @@
 This repository contains the code for analyzing the results from running [BikeDNA](https://github.com/anerv/BikeDNA) on nationwide data for Denmark, comparing data from [OpenStreetMap](https://www.openstreetmap.org/) (OSM) and [GeoDenmark](https://www.geodanmark.dk/).
 
 <!-- TODO: UPDATE TEXT HERE -->
+<!-- Add that it is an explorative analysis -->
 
 The analysis focuses on detecting spatial patterns in the data quality, looking at, for example, correlations between the municipality and the quality of the local data, correlations between OSM quality and population density, and identifying areas with large differences between the two data sources.
 
@@ -116,12 +117,12 @@ All analysis notebooks are in the [`scripts`](scripts) folder.
 
 #### Population
 
-* **`pop_grid.ipynb`:** This notebook processes the population rasters and converts the data into H3 hexagons at the chosen resolutions.
+* **`prepare_population_grid.ipynb`:** This notebook processes the population rasters and converts the data into H3 hexagons at the chosen resolutions.
 
 #### OSM
 
-* **`OSM_tags.ipynb`:** The notebook runs an analysis of spatial patterns in existing and missing tags in the OSM data.
 * **`municipal_analysis_OSM.ipynb`:** The notebook indexes the results of the intrinsic analysis of OSM by municipality and examines correlations between municipality and high/low data quality.
+* **`analyze_OSM_tags.ipynb`:** The notebook runs an analysis of spatial patterns in existing and missing tags in the OSM data.
 
 #### GeoDanmark
 
@@ -129,16 +130,18 @@ All analysis notebooks are in the [`scripts`](scripts) folder.
 
 #### Compare
 
-* **`municipal_comparison.ipynb`:** Compares the outcome of the notebooks looking at the quality and completeness at the municipal level.
 * **`extrinsic_analysis.ipynb`:** Looks at spatial patterns in differences between the two data sets, and contrats the findings with areas of high and low population density.
+* **`municipal_comparison.ipynb`:** Compares the outcome of the notebooks looking at the quality and completeness at the municipal level.
 
-## Results
-
-<!-- TODO: ADD GUIDE TO WHERE TO FIND RESULTS -->
+Additionally, the scripts folder contain the notebook `explore_spatia_weights_sensitivity.ipynb` used to explore the sensitivity of the analysis of spatial patterns in infrastructure density differences to the definition of spatial weights.
 
 >
 > **Warning**
 > Most notebooks can be run independently, but both `municipal_analysis_OSM.ipynb` and `municipal_analysis_reference.ipynb` must be run before `municipal_comparison.ipynb`, and `pop_grid.ipynb` must be run before `extrinsic_analysis.ipynb`.
+
+## Results
+
+<!-- TODO: ADD GUIDE TO WHERE TO FIND RESULTS -->
 
 ## Get in touch
 
