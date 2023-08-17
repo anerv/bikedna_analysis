@@ -277,7 +277,7 @@ def get_local_errors(grid, error_col, hex_ids):
 def index_by_muni(
     gdf,
     muni,
-    muni_cols=["navn", "kommunekode"],
+    muni_cols=["name", "municipal_id"],
     assert_len=True,
     drop_dupli=False,
     dupli_id=None,
