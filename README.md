@@ -135,7 +135,7 @@ All analysis notebooks are in the [`scripts`](scripts) folder.
 
 Additionally, the scripts folder contain the notebook `explore_spatia_weights_sensitivity.ipynb` used to explore the sensitivity of the analysis of spatial patterns in infrastructure density differences to the definition of spatial weights.
 
-<!-- TODO: ADD NOTE ABOUT DATA FOR QGIS PLOTS -->
+<!-- TODO: ADD NOTE ABOUT DATA FOR QGIS PLOTS and QGIS PROJECT FILE -->
 
 >
 > **Warning**
