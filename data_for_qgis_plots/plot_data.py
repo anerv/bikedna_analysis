@@ -10,6 +10,16 @@ import pandas as pd
 exec(open("../settings/paths.py").read())
 exec(open("../settings/yaml_variables.py").read())
 # %%
+# NETWORK EDGES TO GPKG
+
+osm_edges_simplified = gpd.read_parquet(osm_edges_simplified_fp)
+osm_edges_simplified.to_file("data/osm_edges_simplified.gpkg")
+
+ref_edges_simplified = gpd.read_parquet(ref_edges_simplified_fp)
+ref_edges_simplified.to_file("data/ref_edges_simplified.gpkg")
+
+# %%
+# %%
 # Table for paper
 
 osm_muni = pd.read_csv(
