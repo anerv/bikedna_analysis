@@ -3,9 +3,10 @@
 *.parquet
 results/*
 *.pyc
-data/*
+data/compare/*
+data/osm/*
+data/reference/*
+data/population/dk/processed
 
-plots_for_paper/*.gpkg
-plots_for_paper/*.csv
-plots_for_paper/*.svg
+plots_for_paper/data/*
 plots_for_paper/paper_illustrations/*
