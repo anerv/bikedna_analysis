@@ -9,3 +9,6 @@ data/reference/*
 data/population/dk/processed
 
 data_for_qgis_plots/data/*
+
+*.gpkg-shm
+*.gpkg-wal
