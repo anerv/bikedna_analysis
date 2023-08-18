@@ -6,28 +6,6 @@ import geopandas as gpd
 exec(open("../settings/yaml_variables.py").read())
 exec(open("../settings/paths.py").read())
 
-# Load simplified and non-simplified graphs
-
-# osm_graph = ox.load_graphml(
-#     osm_graph_fp,
-# )
-
-
-# osm_graph_simplified = ox.load_graphml(
-#     osm_graph_simplified_fp,
-
-# )
-
-# osm_graph_simplified = ox.load_graphml(
-#     osm_graph_simplified_fp,
-#     edge_dtypes={
-#         "bicycle_bidirectional": ox.io._convert_bool_string,
-#         "infrastructure_length": float,
-#     },
-# )
-
-# print("OSM graphs loaded successfully!")
-
 # Load grid
 osm_grid = gpd.read_parquet(osm_grid_fp)
 grid_ids = osm_grid.grid_id.to_list()
