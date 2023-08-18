@@ -19,8 +19,8 @@ ref_muni = pd.read_csv(
     ref_analysis_data_fp + "muni_network_counts.csv", index_col=False
 )
 
-osm_muni.set_index("navn", inplace=True)
-ref_muni.set_index("navn", inplace=True)
+osm_muni.set_index("name", inplace=True)
+ref_muni.set_index("name", inplace=True)
 
 osm_muni.fillna(0, inplace=True)
 ref_muni.fillna(0, inplace=True)
@@ -75,11 +75,10 @@ reorder_cols = [
 ]
 
 final_df = merged[reorder_cols]
-final_df.to_csv("../data_for_maps/muni_overview.csv", index=True)
+final_df.to_csv("data/muni_overview.csv", index=True)
 
 
 # %%
-
 # Municipal infrastructure density with geometries
 
 osm_muni = pd.read_csv(
@@ -90,41 +89,20 @@ ref_muni = pd.read_csv(
 )
 
 munis = osm_muni.merge(
-    ref_muni, left_on="navn", right_on="navn", suffixes=("_osm", "_ref")
+    ref_muni, left_on="name", right_on="name", suffixes=("_osm", "_ref")
 )
 
 munis["edge_dens_diff"] = munis.infra_dens_ref - munis.infra_dens_osm
 
 munis_geom = gpd.read_file(muni_polygons_fp)
-munis_geom = munis_geom.merge(munis, left_on="navn", right_on="navn", how="inner")
+munis_geom = munis_geom.merge(munis, left_on="navn", right_on="name", how="inner")
 
 assert len(munis_geom) == 98
-assert len(munis_geom.navn.unique()) == 98
+assert len(munis_geom.name.unique()) == 98
 
-# %%
 munis_geom["comp_per_km_diff"] = munis_geom.comp_per_km_ref - munis_geom.comp_per_km_osm
-# %%
-munis_geom.to_file("../data_for_maps/municipality_data.gpkg")
-# %%
-# OSM INTRINSIC GRID + TAG SPATIAL AUTO
 
-# Read intrinsic grid results
-with open(
-    f"../results/OSM/{study_area}/data/grid_results_intrinsic.pickle", "rb"
-) as fp:
-    osm_intrinsic_grid = pickle.load(fp)
-
-osm_intrinsic_grid.dropna(subset="count_osm_edges", inplace=True)
-
-tags_sa = pd.read_csv(osm_analysis_fp + "tags_spatial_autocorrelation.csv")
-
-intrinsic_grid_tags = osm_intrinsic_grid[["geometry", "hex_id"]].merge(
-    tags_sa, left_on="hex_id", right_on="hex_id", how="left"
-)
-
-assert len(intrinsic_grid_tags) == len(osm_intrinsic_grid)
-
-intrinsic_grid_tags.to_file("intrinsic_grid_tags.gpkg")
+munis_geom.to_file("data/municipality_data.gpkg")
 
 # %%
 # GRID WITH EDGE DENSITY DIFF TO GEOPACKAGE
@@ -152,7 +130,6 @@ extrinsic_grid.loc[
     ["comp_count_diff"],
 ] = pd.NA
 
-# %%
 cols = [
     "grid_id",
     "geometry",
@@ -167,9 +144,10 @@ cols = [
     "comp_count_diff",
 ]
 
-extrinsic_grid[cols].to_file("../data_for_maps/extrinsic_grid.gpkg")
+extrinsic_grid[cols].to_file("data/extrinsic_grid.gpkg")
 
 # %%
+# GRID WITH FEATURE MATCHING SPATIAL AUTOCORRELATION RESULTS
 
 with open("../results/compare/dk/data/grid_results_extrinsic.pickle", "rb") as fp:
     extrinsic_grid = pickle.load(fp)
@@ -225,12 +203,18 @@ cols = [
     "count_ref_edges",
 ]
 
-
-fm_grid[cols].to_file("../data_for_maps/fm_grid.gpkg")
+fm_grid[cols].to_file("data/fm_grid.gpkg")
 # %%
-# GRID WITH OSM TAG RESULTS TO GEOPACKAGE
-with open("../results/osm/dk/data/grid_results_intrinsic.pickle", "rb") as fp:
-    osm_int_grid = pickle.load(fp)
+
+# OSM INTRINSIC GRID + results from spatial autocorrelation analysis of tags
+
+# Read intrinsic grid results
+with open(
+    f"../results/OSM/{study_area}/data/grid_results_intrinsic.pickle", "rb"
+) as fp:
+    osm_intrinsic_grid = pickle.load(fp)
+
+osm_intrinsic_grid.dropna(subset="count_osm_edges", inplace=True)
 
 cols = [
     "hex_id",
@@ -263,7 +247,15 @@ cols = [
     "existing_tags_lit_length_pct_missing",
 ]
 
-osm_int_grid[cols].to_file("../data_for_maps/osm_grid.gpkg")
+tags_sa = pd.read_csv(osm_analysis_fp + "tags_spatial_autocorrelation.csv")
+
+intrinsic_grid_tags = osm_intrinsic_grid[cols].merge(
+    tags_sa, left_on="hex_id", right_on="hex_id", how="left"
+)
+
+assert len(intrinsic_grid_tags) == len(osm_intrinsic_grid)
+
+intrinsic_grid_tags.to_file("data/intrinsic_grid_tags.gpkg")
 
 # %%
 
@@ -272,14 +264,14 @@ osm_com_edges = gpd.read_parquet(
     "../results/osm/dk/data/largest_connected_component.parquet"
 )
 
-osm_com_edges.to_file("../data_for_maps/osm_largest_cc.gpkg")
+osm_com_edges.to_file("data/osm_largest_cc.gpkg")
 
 
 ref_com_edges = gpd.read_parquet(
     "../results/reference/dk/data/largest_connected_component.parquet"
 )
 
-ref_com_edges.to_file("../data_for_maps/ref_largest_cc.gpkg")
+ref_com_edges.to_file("data/ref_largest_cc.gpkg")
 
 
 # ALL COMPONENT EDGES
@@ -287,15 +279,39 @@ osm_com_edges = gpd.read_parquet(
     "../results/osm/dk/data/osm_edges_component_id.parquet"
 )
 
-osm_com_edges.to_file("../data_for_maps/osm_comp_edges.gpkg")
+osm_com_edges.to_file("data/osm_comp_edges.gpkg")
 
 ref_com_edges = gpd.read_parquet(
     "../results/reference/dk/data/ref_edges_component_id.parquet"
 )
 
-ref_com_edges.to_file("../data_for_maps/ref_comp_edges.gpkg")
+ref_com_edges.to_file("data/ref_comp_edges.gpkg")
 
-# FEATURE MATCHING RESULTS
+# %%
+# UNDERSHOOTS
+
+osm_nodes_simplified = gpd.read_parquet(osm_nodes_simplified_fp)
+ref_nodes_simplified = gpd.read_parquet(ref_nodes_simplified_fp)
+
+osm_undershoots_ids = pd.read_csv(osm_results_data_fp + "undershoot_nodes_3.csv")
+ref_undershoots_ids = pd.read_csv(ref_results_data_fp + "undershoot_nodes_3.csv")
+
+osm_undershoots = osm_nodes_simplified.loc[
+    osm_nodes_simplified.osmid.isin(osm_undershoots_ids.node_id.to_list())
+]
+
+ref_undershoots = ref_nodes_simplified.loc[
+    ref_nodes_simplified.nodeID.isin(ref_undershoots_ids.node_id.to_list())
+]
+
+assert len(osm_undershoots) == len(osm_undershoots_ids)
+assert len(ref_undershoots) == len(ref_undershoots_ids)
+
+osm_undershoots[["geometry"]].to_file("data/osm_undershoots.gpkg")
+ref_undershoots[["geometry"]].to_file("data/ref_undershoots.gpkg")
+
+# %%
+# FEATURE MATCHING RESULTS (matched and unmatched edges)
 buffer_dist = 15
 hausdorff_threshold = 17
 angular_threshold = 30
@@ -319,88 +335,9 @@ ref_unmatched_segments = gpd.read_parquet(
     + f"ref_unmatched_segments_{buffer_dist}_{hausdorff_threshold}_{angular_threshold}.parquet"
 )
 
-osm_matched_segments.to_file("../data_for_maps/osm_matched.gpkg")
-osm_unmatched_segments.to_file("../data_for_maps/osm_unmatched.gpkg")
-ref_matched_segments.to_file("../data_for_maps/ref_matched.gpkg")
-ref_unmatched_segments.to_file("../data_for_maps/ref_unmatched.gpkg")
-
-# %%
-
-"""
-Recreate plots for paper
-"""
-# Network density grid plots
-
-from src import plotting_functions as plot_func
-
-exec(open("../settings/yaml_variables.py").read())
-exec(open("../settings/plotting.py").read())
-exec(open("../settings/paths.py").read())
-
-# %%
-set_renderer("svg")
-
-grid = extrinsic_grid
-
-plot_cols = ["edge_density_diff"]
-
-plot_titles = [
-    area_name + f": {reference_name} edge density differences to OSM (m/km2)",
-]
-filepaths = [
-    compare_results_static_maps_fp + "edge_density_compare",
-]
-
-cmaps = [pdict["diff"]]
-
-# Cols for no-data plots
-no_data_cols = [
-    ("osm_edge_density", "ref_edge_density"),
-]
-
-cblim_edge = max(
-    abs(min(grid["edge_density_diff"].fillna(value=0))),
-    max(grid["edge_density_diff"].fillna(value=0)),
-)
-
-norm_min = [-cblim_edge]
-norm_max = [cblim_edge]
-
-plot_func.plot_grid_results(
-    grid=grid,
-    plot_cols=plot_cols,
-    plot_titles=plot_titles,
-    filepaths=filepaths,
-    cmaps=cmaps,
-    alpha=pdict["alpha_grid"],
-    cx_tile=cx_tile_2,
-    no_data_cols=no_data_cols,
-    use_norm=True,
-    norm_min=norm_min,
-    norm_max=norm_max,
-)
-
-# %%
-# UNDERSHOOTS
-
-osm_nodes_simplified = gpd.read_parquet(osm_nodes_simplified_fp)
-ref_nodes_simplified = gpd.read_parquet(ref_nodes_simplified_fp)
-
-osm_undershoots_ids = pd.read_csv(osm_results_data_fp + "undershoot_nodes_3.csv")
-ref_undershoots_ids = pd.read_csv(ref_results_data_fp + "undershoot_nodes_3.csv")
-
-osm_undershoots = osm_nodes_simplified.loc[
-    osm_nodes_simplified.osmid.isin(osm_undershoots_ids.node_id.to_list())
-]
-
-ref_undershoots = ref_nodes_simplified.loc[
-    ref_nodes_simplified.nodeID.isin(ref_undershoots_ids.node_id.to_list())
-]
-
-assert len(osm_undershoots) == len(osm_undershoots_ids)
-assert len(ref_undershoots) == len(ref_undershoots_ids)
-# %%
-osm_undershoots[["geometry"]].to_file("osm_undershoots.gpkg")
-ref_undershoots[["geometry"]].to_file("ref_undershoots.gpkg")
+osm_matched_segments.to_file("data/osm_matched.gpkg")
+osm_unmatched_segments.to_file("data/osm_unmatched.gpkg")
+ref_matched_segments.to_file("data/ref_matched.gpkg")
+ref_unmatched_segments.to_file("data/ref_unmatched.gpkg")
 
 # %%
