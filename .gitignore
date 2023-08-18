@@ -8,5 +8,4 @@ data/osm/*
 data/reference/*
 data/population/dk/processed
 
-plots_for_paper/data/*
-plots_for_paper/paper_illustrations/*
+data_for_qgis_plots/data/*
