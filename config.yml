@@ -22,7 +22,7 @@ study_crs: 'EPSG:25832' # The CRS you want to use for the analysis.
 plot_resolution: 'low'
 
 # Filepaths with the data and results from running BikeDNA
-bikedna_data_filepath: "/Users/anev/Dropbox/ITU/repositories/bikedna_denmark/data/"
-results_data_filepath: "/Users/anev/Dropbox/ITU/repositories/bikedna_denmark/results/"
+bikedna_data_filepath: "/Users/anev/Dropbox/ITU/repositories/bikedna_big/data/"
+results_data_filepath: "/Users/anev/Dropbox/ITU/repositories/bikedna_big/results/"
 
 
