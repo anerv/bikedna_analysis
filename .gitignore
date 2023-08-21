@@ -1,16 +1,15 @@
 *.egg-info
 *.DS_Store
-*.parquet
-results/*
 *.pyc
+*.gpkg-shm
+*.gpkg-wal
+
+results/*
 data/compare/*
 data/osm/*
 data/reference/*
 data/population/dk/processed
 data/study_area_polygon/*
 qgis/data/*
-
-*.gpkg-shm
-*.gpkg-wal
 
 todos.md
