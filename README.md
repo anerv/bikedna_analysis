@@ -141,8 +141,15 @@ Additionally, the scripts folder contain the notebook `explore_spatia_weights_se
 
 ## Results
 
-<!-- TODO: ADD GUIDE TO WHERE TO FIND RESULTS -->
-<!-- a lot not saved -->
+The results folder contains the results from running BikeDNA, used as inputs in this analysis (in the folders `results/compare`, `results/osm`, and `results/reference`), and the outputs from running the analysis notebooks.
+
+Output data and plots from the analysis of the BikeDNA outputs are stored in the `_analysis` folders:
+
+* `municipal_analysis_OSM.ipynb` & `analyze_OSM_tags.ipynb` &#8594; `results/osm_analysis/'study_area'/`
+* `municipal_analysis_reference.ipynb` &#8594; `results/reference_analysis/'study_area'/`
+* `extrinsic_analysis.ipynb` & `municipal_comparison.ipynb` &#8594; `results/compare_analysis/'study_area'/`
+
+Since this is an exploratory analysis producing a high number of maps and figures, only selected plots are automatically saved.
 
 ## Reproduce plots in QGIS
 
