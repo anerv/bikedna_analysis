@@ -154,7 +154,7 @@ Since this is an exploratory analysis producing a high number of maps and figure
 ## Reproduce plots in QGIS
 
 Most of the plots from the accompanying paper <!-- TODO: INSERT LINK WHEN READY --> have been prepared in QGIS.
-To recreate the plots, run the Python script `plot_data.py` and open the QGIS project file `illustrations.qgz`.
+To recreate the plots, run the Python script `export_plot_data.py` and open the QGIS project file `illustrations.qgz`.
 A few subsets of the data used in illustrations have been selected and exported manually and are specific to the analysis of the OSM and GeoDanmark data sets in Denmark. These data can be found in the `qgis/data_manual` folder.
 
 ## Get in touch
