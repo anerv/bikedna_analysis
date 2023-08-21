@@ -7,7 +7,7 @@ data/compare/*
 data/osm/*
 data/reference/*
 data/population/dk/processed
-
+data/study_area_polygon/*
 data_for_qgis_plots/data/*
 
 *.gpkg-shm
