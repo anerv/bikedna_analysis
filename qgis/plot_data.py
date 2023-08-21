@@ -1,4 +1,3 @@
-# %%
 """
 Export data sets for maps made in QGIS
 """
@@ -9,7 +8,7 @@ import pandas as pd
 
 exec(open("../settings/paths.py").read())
 exec(open("../settings/yaml_variables.py").read())
-# %%
+
 # NETWORK EDGES TO GPKG
 
 osm_edges_simplified = gpd.read_parquet(osm_edges_simplified_fp)
@@ -18,8 +17,7 @@ osm_edges_simplified.to_file("data/osm_edges_simplified.gpkg")
 ref_edges_simplified = gpd.read_parquet(ref_edges_simplified_fp)
 ref_edges_simplified.to_file("data/ref_edges_simplified.gpkg")
 
-# %%
-# %%
+
 # Table for paper
 
 osm_muni = pd.read_csv(
@@ -88,7 +86,6 @@ final_df = merged[reorder_cols]
 final_df.to_csv("data/muni_overview.csv", index=True)
 
 
-# %%
 # Municipal infrastructure density with geometries
 
 osm_muni = pd.read_csv(
@@ -114,7 +111,7 @@ munis_geom["comp_per_km_diff"] = munis_geom.comp_per_km_ref - munis_geom.comp_pe
 
 munis_geom.to_file("data/municipality_data.gpkg")
 
-# %%
+
 # GRID WITH EDGE DENSITY DIFF TO GEOPACKAGE
 
 with open("../results/compare/dk/data/grid_results_extrinsic.pickle", "rb") as fp:
@@ -156,7 +153,7 @@ cols = [
 
 extrinsic_grid[cols].to_file("data/extrinsic_grid.gpkg")
 
-# %%
+
 # GRID WITH FEATURE MATCHING SPATIAL AUTOCORRELATION RESULTS
 
 with open("../results/compare/dk/data/grid_results_extrinsic.pickle", "rb") as fp:
@@ -214,7 +211,7 @@ cols = [
 ]
 
 fm_grid[cols].to_file("data/fm_grid.gpkg")
-# %%
+
 
 # OSM INTRINSIC GRID + results from spatial autocorrelation analysis of tags
 
@@ -267,7 +264,6 @@ assert len(intrinsic_grid_tags) == len(osm_intrinsic_grid)
 
 intrinsic_grid_tags.to_file("data/intrinsic_grid_tags.gpkg")
 
-# %%
 
 # LARGEST CONNECTED COMPONENT EDGES
 osm_com_edges = gpd.read_parquet(
@@ -297,7 +293,7 @@ ref_com_edges = gpd.read_parquet(
 
 ref_com_edges.to_file("data/ref_comp_edges.gpkg")
 
-# %%
+
 # UNDERSHOOTS
 
 osm_nodes_simplified = gpd.read_parquet(osm_nodes_simplified_fp)
@@ -320,7 +316,7 @@ assert len(ref_undershoots) == len(ref_undershoots_ids)
 osm_undershoots[["geometry"]].to_file("data/osm_undershoots.gpkg")
 ref_undershoots[["geometry"]].to_file("data/ref_undershoots.gpkg")
 
-# %%
+
 # FEATURE MATCHING RESULTS (matched and unmatched edges)
 buffer_dist = 15
 hausdorff_threshold = 17
@@ -349,5 +345,3 @@ osm_matched_segments.to_file("data/osm_matched.gpkg")
 osm_unmatched_segments.to_file("data/osm_unmatched.gpkg")
 ref_matched_segments.to_file("data/ref_matched.gpkg")
 ref_unmatched_segments.to_file("data/ref_unmatched.gpkg")
-
-# %%
