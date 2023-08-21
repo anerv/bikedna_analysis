@@ -10,7 +10,7 @@
 - ~~spatial weights sensitivity~~
 - ~~municipal comparison~~
 
-2. test script for moving/copying data
+2. ~~test script for moving/copying data~~
 
 3. ~~rerun all scripts to make sure that they work (all data in place) (including export data!)~~
 
