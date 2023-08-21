@@ -6,9 +6,16 @@ This repository contains the code for analyzing the results from running [BikeDN
 
 The analysis is an exploratory analysis focused on detecting spatial patterns in the data quality, looking at, for example, the correlations between administrative divisions and differences in data completeness, correlations between OSM tag quality and population density, and dentifying areas with large differences between the two data sources.
 
-<!-- TODO: ADD FIGURE/ILLUSTRATION -->
 
 <!-- TODO: ADD LINK TO PAPER WHEN PUBLISHED -->
+
+## Workflow
+
+The analysis is based on Jupyter notebooks. It therefore requires an installation of [Python](https://www.python.org/downloads/), including tools for [Jupyter notebook](https://jupyter.org/install).
+
+<p align="center">
+<img src='images/workflow.jpg' width=450/>
+</p>
 
 ## 0. Run BikeDNA
 
@@ -69,7 +76,7 @@ In order to run the code, the configuration file [`config.yml`](config.yml) must
 
 Plot settings can be changed in [`scripts/settings/plotting.py`](scripts/settings/plotting.py).
 
-### Set up the folder structure
+### Set up the folder structure & import data
 
 Next, to create the required folder structure and to copy the results from running BikeDNA, navigate to the main folder in a terminal window and run the Python file `setup_folders_input_data.py`
 
