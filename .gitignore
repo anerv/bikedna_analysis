@@ -12,3 +12,5 @@ qgis/data/*
 
 *.gpkg-shm
 *.gpkg-wal
+
+todos.md
