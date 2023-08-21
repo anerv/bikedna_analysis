@@ -8,6 +8,8 @@ The analysis is an exploratory analysis focused on detecting spatial patterns in
 
 <!-- TODO: ADD FIGURE/ILLUSTRATION -->
 
+<!-- TODO: ADD LINK TO PAPER WHEN PUBLISHED -->
+
 ## 0. Run BikeDNA
 
 The first step is to successfuly run [BikeDNA BIG](https://github.com/anerv/BikeDNA_BIG) doing both intrinsic and extrinsic analysis of OSM and GeoDanmark data.
@@ -87,7 +89,7 @@ Successfully created folder results/ref_analysis/
 
 To validate that the results and data were successfully copied to this directory, check that the `results` folder now contains a subfolder `reference` and `osm` with content matching the output of BikeDNA.
 
-### Provide/Prepare data sets
+### Provide data sets
 
 In addition to the input data from BikeDNA, the analysis makes use of:
 
@@ -95,9 +97,8 @@ In addition to the input data from BikeDNA, the analysis makes use of:
 * A dataset with the total population in each municipality: `muni_pop.csv`
 * Population rasters with the local population density
 
-These data sets are already provided as part of this repository. If other datasets are to be used, once the folders have been created:
-
-<!-- TODO: ADD THAT THEY ARE PROVIDED FOR THE STUDY AREA DK/DENMARK WITH CONFIG as is -->
+These data sets are already provided as part of this repository for an analysis covering all of Denmark, using the default study area settings in the config.yml.
+If other datasets are to be used, once the folders have been created:
 
 * remove the existing data files
 * place the files `municipalities.gpkg` and `muni_pop.csv` in the folder data > municipalities > 'study_area' > raw
@@ -134,15 +135,20 @@ All analysis notebooks are in the [`scripts`](scripts) folder.
 
 Additionally, the scripts folder contain the notebook `explore_spatia_weights_sensitivity.ipynb` used to explore the sensitivity of the analysis of spatial patterns in infrastructure density differences to the definition of spatial weights.
 
-<!-- TODO: ADD NOTE ABOUT DATA FOR QGIS PLOTS and QGIS PROJECT FILE -->
-
 >
 > **Warning**
-> Most notebooks can be run independently, but both `municipal_analysis_OSM.ipynb` and `municipal_analysis_reference.ipynb` must be run before `municipal_comparison.ipynb`, and `pop_grid.ipynb` must be run before `extrinsic_analysis.ipynb`.
+> Most notebooks can be run independently, but both `municipal_analysis_OSM.ipynb` and `municipal_analysis_reference.ipynb` must be run before `municipal_comparison.ipynb`, and `pop_grid.ipynb` must be run before `extrinsic_analysis.ipynb` and `analyze_OSM_tags.ipynb`.
 
 ## Results
 
 <!-- TODO: ADD GUIDE TO WHERE TO FIND RESULTS -->
+<!-- a lot not saved -->
+
+## Reproduce plots in QGIS
+
+Most of the plots from the accompanying paper <!-- TODO: INSERT LINK WHEN READY --> have been prepared in QGIS.
+To recreate the plots, run the Python script `plot_data.py` and open the QGIS project file `illustrations.qgz`.
+A few subsets of the data used in illustrations have been selected and exported manually and are specific to the analysis of the OSM and GeoDanmark data sets in Denmark. These data can be found in the `qgis/data_manual` folder.
 
 ## Get in touch
 
