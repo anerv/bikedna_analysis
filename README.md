@@ -2,18 +2,15 @@
 
 # Analysis of BikeDNA Denmark
 
-This repository contains the code for analyzing the results from running [BikeDNA](https://github.com/anerv/BikeDNA) on nationwide data for Denmark, comparing data from [OpenStreetMap](https://www.openstreetmap.org/) (OSM) and [GeoDenmark](https://www.geodanmark.dk/).
+This repository contains the code for analyzing the results from running [BikeDNA](https://github.com/anerv/BikeDNA), in a [version](https://github.com/anerv/BikeDNA_BIG) adapted for large data sets, on nationwide data for Denmark, comparing data from [OpenStreetMap](https://www.openstreetmap.org/) (OSM) and [GeoDanmark](https://www.geodanmark.dk/).
 
-<!-- TODO: UPDATE TEXT HERE -->
-<!-- Add that it is an explorative analysis -->
-
-The analysis focuses on detecting spatial patterns in the data quality, looking at, for example, correlations between the municipality and the quality of the local data, correlations between OSM quality and population density, and identifying areas with large differences between the two data sources.
+The analysis is an exploratory analysis focused on detecting spatial patterns in the data quality, looking at, for example, the correlations between administrative divisions and differences in data completeness, correlations between OSM tag quality and population density, and dentifying areas with large differences between the two data sources.
 
 <!-- TODO: ADD FIGURE/ILLUSTRATION -->
 
 ## 0. Run BikeDNA
 
-The first step is to successfuly run BikeDNA doing both intrinsic and extrinsic analysis of OSM and GeoDanmark data.
+The first step is to successfuly run [BikeDNA BIG](https://github.com/anerv/BikeDNA_BIG) doing both intrinsic and extrinsic analysis of OSM and GeoDanmark data.
 
 ## I. Installation
 
@@ -99,6 +96,8 @@ In addition to the input data from BikeDNA, the analysis makes use of:
 * Population rasters with the local population density
 
 These data sets are already provided as part of this repository. If other datasets are to be used, once the folders have been created:
+
+<!-- TODO: ADD THAT THEY ARE PROVIDED FOR THE STUDY AREA DK/DENMARK WITH CONFIG as is -->
 
 * remove the existing data files
 * place the files `municipalities.gpkg` and `muni_pop.csv` in the folder data > municipalities > 'study_area' > raw
