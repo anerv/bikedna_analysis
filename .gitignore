@@ -13,3 +13,4 @@ data/study_area_polygon/*
 qgis/data/*
 
 todos.md
+scripts/random_test.py
