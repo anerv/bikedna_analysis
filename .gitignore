@@ -10,6 +10,6 @@ data/osm/*
 data/reference/*
 data/population/dk/processed
 data/study_area_polygon/*
-
+qgis/data/*
 todos.md
 scripts/random_test.py
