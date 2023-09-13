@@ -205,7 +205,7 @@ Downloaded spring 2023.
 
 ### GHSL
 
-Contains data from the European Commision's [GHSL (Global Human Settlement Layer)](https://ghsl.jrc.ec.europa.eu/download.php?ds=pop)
+Contains data from the European Commission's [GHSL (Global Human Settlement Layer)](https://ghsl.jrc.ec.europa.eu/download.php?ds=pop)
 
 Schiavina M., Freire S., Carioli A., MacManus K. (2023):
 GHS-POP R2023A - GHS population grid multitemporal (1975-2030).European Commission, Joint Research Centre (JRC).
