@@ -6,6 +6,7 @@ This repository contains the code for analyzing the results from running [BikeDN
 
 The analysis is an exploratory analysis focused on detecting spatial patterns in the data quality, looking at, for example, the correlations between administrative divisions and differences in data completeness, correlations between OSM tag quality and population density, and dentifying areas with large differences between the two data sources.
 
+For a full reproducible setup with all input data, see [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.8340413.svg)](https://doi.org/10.5281/zenodo.8340413).
 
 <!-- TODO: ADD LINK TO PAPER WHEN PUBLISHED -->
 
